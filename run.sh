@@ -7,7 +7,7 @@ if [ ! -f /app/.setup_done ]; then
 fi
 
 # Start syslog and SSH daemon
-service rsyslog start
+#service rsyslog start
 service ssh start
 
 # Enter tmux terminal

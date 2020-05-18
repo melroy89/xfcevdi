@@ -4,7 +4,6 @@ LABEL maintainer="melroy@melroy.org"
 
 ARG DEBIAN_FRONTEND=noninteractive
 ARG APT_PROXY
-ENV DBUS_SYSTEM_BUS_ADDRESS 'unix:path=/var/run/dbus/system_bus_socket'
 
 WORKDIR /app
 
@@ -26,7 +25,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     software-properties-common apt-utils net-tools
 RUN apt-key adv --recv-keys --keyserver keys.gnupg.net E1F958385BFE2B6E
 
-COPY ./x2go.list /etc/apt/sources.list.d/x2go.list
+COPY ./configs/x2go.list /etc/apt/sources.list.d/x2go.list
 
 RUN apt-get update && apt-get install -y x2go-keyring && apt-get update
 RUN apt-get install -y x2goserver x2goserver-xsession
