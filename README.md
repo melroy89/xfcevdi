@@ -20,3 +20,9 @@ Start the docker container using:
 ```sh
 docker run --shm-size 2g -it -p 2222:22 vdi:latest
 ```
+
+Or with the username `melroy` with password `abc`:
+
+```sh
+docker run --shm-size 2g -it -p 2222:22 -e USERNAME=melroy -e PASS=abc vdi:latest
+```
