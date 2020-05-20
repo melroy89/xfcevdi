@@ -23,13 +23,15 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     lsb-base pinentry-curses readline-common \
     apt-transport-https ca-certificates curl \
     software-properties-common apt-utils net-tools
-RUN apt-key adv --recv-keys --keyserver keys.gnupg.net E1F958385BFE2B6E
 
+# Add X2Go apt list
+RUN apt-key adv --recv-keys --keyserver keys.gnupg.net E1F958385BFE2B6E
 COPY ./configs/x2go.list /etc/apt/sources.list.d/x2go.list
 
+# Add contrib and non-free
+RUN apt-add-repository contrib && apt-add-repository non-free
 RUN apt-get update && apt-get install -y x2go-keyring && apt-get update
 RUN apt-get install -y x2goserver x2goserver-xsession
-# Unrar is in the non-free
 RUN apt-get install -y --no-install-recommends \
     rsyslog \
     locales \
@@ -41,6 +43,7 @@ RUN apt-get install -y --no-install-recommends \
     sudo \
     zip \
     unzip \
+    unrar \
     tmux \
     ffmpeg \
     pwgen \
@@ -60,7 +63,16 @@ RUN apt-get upgrade -y && apt-get install -y \
     thunar tumbler xfce4-clipman-plugin \
     xfce4-screenshooter xfce4-notifyd xfce4-pulseaudio-plugin \
     xfce4-statusnotifier-plugin
-RUN apt-get install -y --no-install-recommends firefox-esr htop gnome-calculator mousepad
+# TODO: Don't install xfce4-goodies, but only install a sub-part of some useful plugins only!
+# Like: Notes, xarchiver, bulk rename, window manager tweaks, ?
+
+# Add Papirus icons
+RUN apt-key adv --recv-keys --keyserver keyserver.ubuntu.com E58A9D36647CAE7F
+COPY ./configs/papirus-ppa.list /etc/apt/sources.list.d/papirus-ppa.list
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends fonts-ubuntu fonts-dejavu-core breeze-gtk-theme papirus-icon-theme
+
+RUN apt-get install -y --no-install-recommends firefox-esr htop gnome-calculator mousepad ristretto
 
 RUN update-locale
 RUN rm -rf /etc/ssh/ssh_host_* \

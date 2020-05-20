@@ -1,0 +1,2 @@
+# For Debian we can reuse the PPA but use bionic
+deb http://ppa.launchpad.net/papirus/papirus/ubuntu bionic main
