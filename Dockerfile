@@ -93,8 +93,12 @@ RUN apt-get clean -y && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/cache
 
 EXPOSE 22
 
+# Just start default prompt (do not ask)
+RUN mv -f /etc/xdg/xfce4/panel/default.xml /etc/xdg/xfce4/xfconf/xfce-perchannel-xml/xfce4-panel.xml
 COPY ./setup.sh ./
 COPY ./configs/terminalrc ./
+COPY ./configs/whiskermenu-1.rc ./
 COPY ./xfce_settings.sh ./
+# TODO: Automatically execute the xfce_settings
 COPY ./run.sh ./
 CMD ./run.sh

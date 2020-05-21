@@ -26,3 +26,9 @@ Or with the username `melroy` with password `abc`:
 ```sh
 docker run --shm-size 2g -it -p 2222:22 -e USERNAME=melroy -e PASS=abc vdi:latest
 ```
+
+## TODOs / Questions
+
+* See TODOs in `xfce_settings.sh`
+* Automatically execute `/app/xfce_settings.sh`, some desktop file or autostart?
+* Lock-screen yes or not? (currently unchecked also in the menu commands)
