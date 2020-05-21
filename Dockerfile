@@ -12,6 +12,7 @@ COPY ./configs/apt.conf ./
 COPY ./apt_proxy.sh ./
 RUN ./apt_proxy.sh
 
+## First install basic require packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
     dirmngr gnupg gnupg-l10n \
     gnupg-utils gpg gpg-agent \
@@ -24,14 +25,19 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     apt-transport-https ca-certificates curl \
     software-properties-common apt-utils net-tools
 
+## Add additional repositories/components (software-properties-common is required to be installed)
+# Add contrib and non-free distro components
+RUN apt-add-repository contrib && apt-add-repository non-free
+# Add Debian backports for LibreOffice and Papirus icons
+RUN add-apt-repository -s "deb http://deb.debian.org/debian buster-backports main contrib non-free"
 # Add X2Go apt list
 RUN apt-key adv --recv-keys --keyserver keys.gnupg.net E1F958385BFE2B6E
 COPY ./configs/x2go.list /etc/apt/sources.list.d/x2go.list
 
-# Add contrib and non-free
-RUN apt-add-repository contrib && apt-add-repository non-free
-RUN apt-get update && apt-get install -y x2go-keyring && apt-get update
+## Install X2Go server and session
+RUN apt update && apt-get install -y x2go-keyring && apt-get update
 RUN apt-get install -y x2goserver x2goserver-xsession
+## Install often-used dependency packages
 RUN apt-get install -y --no-install-recommends \
     rsyslog \
     locales \
@@ -39,9 +45,9 @@ RUN apt-get install -y --no-install-recommends \
     pavucontrol \
     git \
     wget \
-    bzip2 \
     sudo \
     zip \
+    bzip2 \
     unzip \
     unrar \
     tmux \
@@ -57,28 +63,38 @@ RUN apt-get install -y --no-install-recommends \
     util-linux \
     x11-utils \
     x11-xkb-utils
+## Install XFCE4
 RUN apt-get upgrade -y && apt-get install -y \
     xfce4-session xfwm4 xfce4-panel \
     xfce4-terminal xfce4-appfinder \
     thunar tumbler xfce4-clipman-plugin \
     xfce4-screenshooter xfce4-notifyd xfce4-pulseaudio-plugin \
-    xfce4-statusnotifier-plugin
-# TODO: Don't install xfce4-goodies, but only install a sub-part of some useful plugins only!
-# Like: Notes, xarchiver, bulk rename, window manager tweaks, ?
+    xfce4-statusnotifier-plugin xfce4-datetime-plugin xfce4-notes-plugin \
+    xarchiver thunar-archive-plugin xfce4-whiskermenu-plugin
+# TODO: request for buster-backports for mugshot
 
-# Add Papirus icons
-RUN apt-key adv --recv-keys --keyserver keyserver.ubuntu.com E58A9D36647CAE7F
-COPY ./configs/papirus-ppa.list /etc/apt/sources.list.d/papirus-ppa.list
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends fonts-ubuntu fonts-dejavu-core breeze-gtk-theme papirus-icon-theme
+## Add themes & fonts
+RUN apt-get install -y --no-install-recommends fonts-ubuntu fonts-dejavu-core breeze-gtk-theme
+# Add Papirus icons from backports
+RUN apt install -y -t buster-backports papirus-icon-theme
 
+## Add additional applications
 RUN apt-get install -y --no-install-recommends firefox-esr htop gnome-calculator mousepad ristretto
+# Add Office
+RUN apt install -y -t buster-backports libreoffice-base libreoffice-base-core libreoffice-common libreoffice-core libreoffice-base-drivers \
+    libreoffice-nlpsolver libreoffice-script-provider-bsh libreoffice-script-provider-js libreoffice-script-provider-python libreoffice-style-colibre \
+    libreoffice-writer libreoffice-calc libreoffice-impress libreoffice-draw libreoffice-math 
 
+# Update locales, generate new SSH host keys and clean-up
 RUN update-locale
 RUN rm -rf /etc/ssh/ssh_host_* \
     && ssh-keygen -A
+RUN apt-get clean -y && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/cache/apk/*
+
 EXPOSE 22
 
 COPY ./setup.sh ./
+COPY ./configs/terminalrc ./
+COPY ./xfce_settings.sh ./
 COPY ./run.sh ./
 CMD ./run.sh
