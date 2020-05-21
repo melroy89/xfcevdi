@@ -37,11 +37,11 @@ COPY ./configs/x2go.list /etc/apt/sources.list.d/x2go.list
 ## Install X2Go server and session
 RUN apt update && apt-get install -y x2go-keyring && apt-get update
 RUN apt-get install -y x2goserver x2goserver-xsession
-## Install often-used dependency packages
+## Install important (and often used) dependency packages
 RUN apt-get install -y --no-install-recommends \
-    rsyslog \
+    openssh-server \
     locales \
-    pulseaudio \
+    rsyslog \
     pavucontrol \
     git \
     wget \
@@ -53,14 +53,13 @@ RUN apt-get install -y --no-install-recommends \
     tmux \
     ffmpeg \
     pwgen \
-    openssh-server \
     nano \
     file \
     dialog \
+    util-linux \
     coreutils \
     xdg-utils \
     xz-utils \
-    util-linux \
     x11-utils \
     x11-xkb-utils
 ## Install XFCE4
@@ -85,20 +84,27 @@ RUN apt install -y -t buster-backports libreoffice-base libreoffice-base-core li
     libreoffice-nlpsolver libreoffice-script-provider-bsh libreoffice-script-provider-js libreoffice-script-provider-python libreoffice-style-colibre \
     libreoffice-writer libreoffice-calc libreoffice-impress libreoffice-draw libreoffice-math 
 
-# Update locales, generate new SSH host keys and clean-up
+# Update locales, generate new SSH host keys and clean-up (keep manpages)
 RUN update-locale
 RUN rm -rf /etc/ssh/ssh_host_* \
     && ssh-keygen -A
-RUN apt-get clean -y && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/cache/apk/*
+RUN apt-get clean -y && rm -rf /usr/share/doc/* /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/cache/apk/*
 
 EXPOSE 22
 
-# Just start default prompt (do not ask)
+# Start default XFCE4 panels (don't ask for it)
 RUN mv -f /etc/xdg/xfce4/panel/default.xml /etc/xdg/xfce4/xfconf/xfce-perchannel-xml/xfce4-panel.xml
+# Use mice as default Splash
+COPY ./configs/xfconf/xfce4-session.xml /etc/xdg/xfce4/xfconf/xfce-perchannel-xml/xfce4-session.xml
+# Add XFCE4 settings to start-up
+COPY ./configs/xfce4-settings.desktop /etc/xdg/autostart/
+# Enable Clipman by default during start-up
+RUN sed -i "s/Hidden=.*/Hidden=false/" /etc/xdg/autostart/xfce4-clipman-plugin-autostart.desktop
+# Remove unnecessary existing start-up apps
+RUN rm -rf /etc/xdg/autostart/light-locker.desktop /etc/xdg/autostart/xscreensaver.desktop
 COPY ./setup.sh ./
 COPY ./configs/terminalrc ./
 COPY ./configs/whiskermenu-1.rc ./
 COPY ./xfce_settings.sh ./
-# TODO: Automatically execute the xfce_settings
 COPY ./run.sh ./
 CMD ./run.sh
