@@ -9,7 +9,7 @@ if [ ! -f /app/.setup_done ]; then
   /app/setup.sh
 fi
 
-# Start syslog and SSH daemon
+# Start SSH daemon
 service ssh start
 
 # Enter tmux terminal
