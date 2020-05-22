@@ -79,8 +79,8 @@ RUN apt-get upgrade -y && apt-get install -y \
 
 ## Add themes & fonts
 RUN apt-get install -y --no-install-recommends fonts-ubuntu breeze-gtk-theme mint-themes
-# Add Papirus icons from backports
-RUN apt install -y -t buster-backports papirus-icon-theme
+# Don't add papirus icons (can be comment-out)
+#RUN apt install -y -t buster-backports papirus-icon-theme
 
 ## Add additional applications
 RUN apt-get install -y --no-install-recommends firefox-esr htop gnome-calculator mousepad ristretto
