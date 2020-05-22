@@ -37,7 +37,7 @@ COPY ./configs/x2go.list /etc/apt/sources.list.d/x2go.list
 ## Install X2Go server and session
 RUN apt update && apt-get install -y x2go-keyring && apt-get update
 RUN apt-get install -y x2goserver x2goserver-xsession
-## Install important (and often used) dependency packages
+## Install important (or often used) dependency packages
 RUN apt-get install -y --no-install-recommends \
     openssh-server \
     locales \
@@ -56,6 +56,7 @@ RUN apt-get install -y --no-install-recommends \
     nano \
     file \
     dialog \
+    at-spi2-core \
     util-linux \
     coreutils \
     xdg-utils \
