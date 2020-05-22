@@ -45,14 +45,16 @@ Or with the username `melroy` with password `abc`:
 docker run --shm-size 2g -it -p 2222:22 -e USERNAME=melroy -e PASS=abc vdi:latest
 ```
 
-Available options (use `-e` flag during `docker run`) are:
+Available environment variables (use `-e` flag during `docker run`) are:
 
-* USERNAME - provide another username (default: `user`)
-* USER_ID - provide another GUID/user ID (default: `1000`)
-* PASS - change password for user (default auto-generated)
-* ROOT_PASS - change password for root-user (default auto-generated)
-* ALLOW_ROOT_SSH - allow root access via SSH (default `false`, otherwise to set to `true`)
-* ENTER_PASS - require to enter password for sudo root commands (default `false`, otherwise to set to `true`)
+| Env. variable    | Type    | Description                                 | Default value          |
+|------------------|---------|---------------------------------------------|------------------------|
+| `USERNAME`       | string  | Provide another username                    | `user`                 |
+| `USER_ID`        | integer | Provide another GUID/user ID                | `1000`                 |
+| `PASS`           | string  | Change password for user                    | *auto-generated pass*  |
+| `ROOT_PASS`      | string  | Change password for root-user               | *auto-generated pass*  |
+| `ALLOW_ROOT_SSH` | boolean | Allow root access via SSH                   | `false`                |
+| `ENTER_PASS`     | boolean | Require to enter password for sudo commands | `false`                |
 
 ## Clients
 
@@ -61,14 +63,14 @@ X2Go has two clients available to choose from:
 * X2Go Client (recommended)
 * PyHoca-GUI
 
-Which can both be [downloaded from their site](https://wiki.x2go.org/doku.php/download:start) for Windows/Mac and Linux.
+Which can both be [downloaded from their site](https://wiki.x2go.org/doku.php/download:start). Clients are available for Windows/Mac and/or GNU/Linux operating systems.
 
-Once started create a new session and provide the following info:
+Once you open the client, create a new session by providing the following settings (default settings):
 
-* Host: host IP addresss (or domain)
-* Login: username (default: `user`)
-* SSH port: 2222 (if you use the docker run command above)
-* Session type: XFCE (select from drop-down)
+* Host: host IP addresss (or domain name or `localhost`)
+* Login: `user` (default username)
+* SSH port: `2222` (default port)
+* Session type: `XFCE` (select from drop-down menu)
 
 ## TODOs
 
