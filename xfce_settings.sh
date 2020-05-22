@@ -11,8 +11,7 @@ if [ ! -f /home/$USER/.local/.xfce_settings_done ]; then
   xfconf-query -c xsettings -p /Gtk/FontName -s "Ubuntu 10"
 
   # Change window style manager
-  # TODO: Change theme, like: Mint-y-dark-blue
-  xfconf-query -c xfwm4 -p /general/theme -s "Moheli"
+  xfconf-query -c xfwm4 -p /general/theme -s "Mint-Y-Dark-Blue"
   xfconf-query -c xfwm4 -p /general/title_font -s "Ubuntu Medium 10"
 
   # Move terminalrc config to correct location

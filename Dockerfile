@@ -28,8 +28,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 ## Add additional repositories/components (software-properties-common is required to be installed)
 # Add contrib and non-free distro components
 RUN apt-add-repository contrib && apt-add-repository non-free
-# Add Debian backports for LibreOffice and Papirus icons
+# Add Debian backports repo for LibreOffice and Papirus icons
 RUN add-apt-repository -s "deb http://deb.debian.org/debian buster-backports main contrib non-free"
+# Add Linux Mint repo for Mint-Y-Dark theme
+RUN apt-key adv --recv-keys --keyserver keys.gnupg.net A6616109451BBBF2
+RUN apt-add-repository -s 'deb http://packages.linuxmint.com debbie main'
+
 # Add X2Go apt list
 RUN apt-key adv --recv-keys --keyserver keys.gnupg.net E1F958385BFE2B6E
 COPY ./configs/x2go.list /etc/apt/sources.list.d/x2go.list
@@ -74,7 +78,7 @@ RUN apt-get upgrade -y && apt-get install -y \
 # TODO: request for buster-backports for mugshot
 
 ## Add themes & fonts
-RUN apt-get install -y --no-install-recommends fonts-ubuntu fonts-dejavu-core breeze-gtk-theme
+RUN apt-get install -y --no-install-recommends fonts-ubuntu breeze-gtk-theme mint-themes
 # Add Papirus icons from backports
 RUN apt install -y -t buster-backports papirus-icon-theme
 
