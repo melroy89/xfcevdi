@@ -2,6 +2,9 @@
 # Change some settings of XFCE4 look & feel
 
 if [ ! -f /home/$USER/.local/.xfce_settings_done ]; then
+  # Panels are getting created wait before xfce setup is completed
+  sleep 1.5
+
   # Additional changes to XFCE settings (xsettings.xml)
   xfconf-query -c xsettings -p /Net/ThemeName -s "Breeze-Dark"
   xfconf-query -c xsettings -p /Net/IconThemeName -s "Papirus-Dark"
@@ -26,11 +29,7 @@ if [ ! -f /home/$USER/.local/.xfce_settings_done ]; then
   # Change bottom-panel to intelligently-hide
   xfconf-query -c xfce4-panel -p /panels/panel-2/autohide-behavior -n -t int -s 1
 
-  # Maybe disable compositor (if not already), is that wise?
   # TODO: Add PulseAudio plugin to panel
-
-  # Panels are getting created wait before xfce setup is completed
-  sleep 1
 
   # Change browser icon to Firefox
   launchName="launcher-11"

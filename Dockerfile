@@ -90,7 +90,9 @@ RUN rm -rf /etc/ssh/ssh_host_* \
     && ssh-keygen -A
 RUN apt-get clean -y && rm -rf /usr/share/doc/* /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/cache/apk/*
 
-EXPOSE 22
+# Update timezone to The Netherlands
+RUN echo 'Europe/Amsterdam' > /etc/timezone
+RUN unlink /etc/localtime && ln -s /usr/share/zoneinfo/Europe/Amsterdam /etc/localtime
 
 # Start default XFCE4 panels (don't ask for it)
 RUN mv -f /etc/xdg/xfce4/panel/default.xml /etc/xdg/xfce4/xfconf/xfce-perchannel-xml/xfce4-panel.xml
@@ -107,4 +109,7 @@ COPY ./configs/terminalrc ./
 COPY ./configs/whiskermenu-1.rc ./
 COPY ./xfce_settings.sh ./
 COPY ./run.sh ./
+
+EXPOSE 22
+
 CMD ./run.sh
