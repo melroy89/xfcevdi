@@ -6,15 +6,15 @@ Docker image for running [Debian](https://hub.docker.com/_/debian) and [XFCE](ht
 
 This docker image enables you to start one or more instances of a Virtual Desktop Infrastructure (VDI).
 
-By using [Docker](https://www.docker.com/resources/what-container), there will be **NO** boot of whole operating system (like VMs are), instead docker will use the kernel resources and shares them with the docker container.
+By utilizing [Docker containers](https://www.docker.com/resources/what-container), there will be **NO** boot of whole operating system (like VMs do), instead docker will use the OS kernel resources and shares them with the docker container. Resulting in much faster start-up times than VMs can every do.
 
-By using the [X2Go protocol](https://wiki.x2go.org/) to easily connect/share sessions between the client and the server. Which allows remote working or any other task you might want do remotely in a windowing system.
+By using the [X2Go protocol](https://wiki.x2go.org/) it's easy to connect/share sessions between the client and the server. Which allows remote working or any other task you might want do remotely in a windowing system.
 
-The image contains a docker [GNU/Linux Debian](https://hub.docker.com/_/debian) (buster) operating system, together with XFCE4 desktop environment. X2Goserver/X2Gosession are already pre-installed.
+The image contains a [docker GNU/Linux Debian](https://hub.docker.com/_/debian) (buster) operating system, together with XFCE4 desktop environment. The required X2Goserver/X2Gosession are already pre-installed.
 
-In fact, the image has alot of packages installed you properbly need, including but not limited to: `Firefox`, `LibreOffice`, `gnome-calculator`, `archiver`, `file manager`, `text editor`, `image viewer`, `htop`, `clipboard manager` and much more.
+In fact, the image has alot of packages installed you properly want, including but not limited to: `Firefox`, `LibreOffice`, `gnome-calculator`, `archiver`, `file manager`, `text editor`, `image viewer`, `htop`, `clipboard manager` and much more.
 
-Last but not least, the image is preconfigured with a nice dark-theme (Breeze-Dark), window theme (Mint-y-dark) as well as a nice icon set (Papirus-Dark) and uses Ubuntu fonts by default. See below:
+Last but not least, the image is preconfigured with a nice dark-theme (Breeze-Dark), window theme (Mint-Y-Dark) as well as a nice looking icon set (Papirus-Dark) and uses Ubuntu fonts by default. See below:
 
 ![](preview.png)
 
