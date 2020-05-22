@@ -72,6 +72,8 @@ Once you open the client, create a new session by providing the following settin
 * SSH port: `2222` (default port)
 * Session type: `XFCE` (select from drop-down menu)
 
+Once you try to connect, you'll require to enter a password (by default the passwords are generated!).
+
 ## TODOs
 
 * Add PulseAudio plugin to panel
