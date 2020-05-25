@@ -14,6 +14,6 @@ services:
         tmpfs:
           size: 2048000000 # 2GB
     ports:
-      - 2222:22
+      - "2222:22"
     network_mode: bridge    
     restart: always
