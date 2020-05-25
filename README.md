@@ -49,6 +49,8 @@ Or with the username `melroy` with password `abc`:
 docker run --shm-size 2g -it -p 2222:22 -e USERNAME=melroy -e PASS=abc vdi:latest
 ```
 
+You can also use a docker-compose file! See the [docker compose file](vdi-compose.yml) within this git repository.
+
 Available environment variables (use `-e` flag during `docker run`) are:
 
 | Env. variable    | Type    | Description                                 | Default value          |

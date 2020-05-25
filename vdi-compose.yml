@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  xfcevdi:
+    image: danger89/xfcevdi_x2go
+    container_name: melroy_vdi
+    environment:
+      USERNAME: melroy
+      PASS: abc
+    volumes:
+      - /media/data/vdi_homes/:/home/
+      - type: tmpfs
+        target: /dev/shm
+        tmpfs:
+          size: 2048000000 # 2GB
+    ports:
+      - 2222:22
+    network_mode: bridge    
+    restart: always
