@@ -12,5 +12,6 @@ fi
 # Start SSH daemon
 service ssh start
 
-# Enter tmux terminal
-tmux
+# Start tmux terminal
+tmux new-session -s $USER -d
+tmux attach

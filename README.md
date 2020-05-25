@@ -62,6 +62,12 @@ Available environment variables (use `-e` flag during `docker run`) are:
 | `ALLOW_ROOT_SSH` | boolean | Allow root access via SSH                   | `false`                |
 | `ENTER_PASS`     | boolean | Require to enter password for sudo commands | `false`                |
 
+## Update
+
+1. Stop docker container (`docker stop <container_id>`)
+2. Get latest version: `docker pull danger89/xfcevdi_x2go`
+3. Start docker container (either via command line or using docker compose)
+
 ## Clients
 
 X2Go has two clients available to choose from:
