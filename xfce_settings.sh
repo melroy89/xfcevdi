@@ -2,9 +2,6 @@
 # Change some settings of XFCE4 look & feel
 
 if [ ! -f /home/$USER/.local/.xfce_settings_done ]; then
-  # Panels are getting created wait before xfce setup is completed
-  sleep 1.5
-
   # Additional changes to XFCE settings (xsettings.xml)
   xfconf-query -c xsettings -p /Net/ThemeName -s "Breeze-Dark"
   xfconf-query -c xsettings -p /Net/IconThemeName -s "Mint-Y-Dark-Aqua"
@@ -29,14 +26,22 @@ if [ ! -f /home/$USER/.local/.xfce_settings_done ]; then
   xfconf-query -c xfce4-panel -p /panels/panel-2/autohide-behavior -n -t int -s 1
 
   # TODO: Add PulseAudio plugin to panel
-
-  # Change browser icon to Firefox
-  launchName="launcher-11"
-  filename=$(ls /home/$USER/.config/xfce4/panel/$launchName/ | head -1)
-  sed -i "s/Icon=.*/Icon=firefox/" /home/$USER/.config/xfce4/panel/$launchName/$filename
-
+  
   # Reset panel(s) once
   xfce4-panel -r
+
+  # Change browser icon to Firefox
+  while true; do
+    sleep 4
+    PID_ID=$(pidof xfce4-panel)
+    if [ -n "$PID_ID" ]; then
+      launchName="launcher-11"
+      filename=$(ls /home/$USER/.config/xfce4/panel/$launchName/ | head -1)
+      sed -i "s/Icon=.*/Icon=firefox/" /home/$USER/.config/xfce4/panel/$launchName/$filename
+      # Exit loop
+      break
+    fi
+  done
 
   touch /home/$USER/.local/.xfce_settings_done
 fi
