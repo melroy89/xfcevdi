@@ -54,7 +54,6 @@ RUN apt-get install -y --no-install-recommends \
     bzip2 \
     unzip \
     unrar \
-    tmux \
     ffmpeg \
     pwgen \
     nano \

@@ -28,10 +28,9 @@ if [ "$ENTER_PASS" = false ]; then
 fi
 
 cat <<-EOT > "/root/.bashrc"
-    if [ -z "$TMUX" ]; then
-      echo "Root password is: $ROOT_PASS"
-      echo "New user ($USERNAME) has password: $PASS"
-    fi
+echo -e "Thank you for using Melroy's VDI docker image!\n"
+echo "Info: Root password is: $ROOT_PASS"
+echo "Info: New user ($USERNAME) has password: $PASS"
 EOT
 unset ROOT_PASS
 unset PASS

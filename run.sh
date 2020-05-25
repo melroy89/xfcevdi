@@ -12,6 +12,5 @@ fi
 # Start SSH daemon
 service ssh start
 
-# Start tmux terminal
-tmux new-session -s $USER -d
-tmux attach
+# Start bash
+bash

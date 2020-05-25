@@ -49,7 +49,12 @@ Or with the username `melroy` with password `abc`:
 docker run --shm-size 2g -it -p 2222:22 -e USERNAME=melroy -e PASS=abc vdi:latest
 ```
 
-You can also use a docker-compose file! See the [docker compose file](vdi-compose.yml) within this git repository.
+### Docker compose
+
+You can also use a docker-compose file!
+See the [docker compose file](vdi-compose.yml) within this git repository.
+
+### Environment variables
 
 Available environment variables (use `-e` flag during `docker run`) are:
 
@@ -62,11 +67,11 @@ Available environment variables (use `-e` flag during `docker run`) are:
 | `ALLOW_ROOT_SSH` | boolean | Allow root access via SSH                   | `false`                |
 | `ENTER_PASS`     | boolean | Require to enter password for sudo commands | `false`                |
 
-## Update
+## Update VDI
 
 1. Stop docker container (`docker stop <container_id>`)
 2. Get latest version: `docker pull danger89/xfcevdi_x2go`
-3. Start docker container (either via command line or using docker compose)
+3. Start docker container again (either via `docker run` or using `docker-compose`)
 
 ## Clients
 
