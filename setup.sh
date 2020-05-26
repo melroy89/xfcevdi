@@ -22,6 +22,12 @@ echo "$USERNAME:$PASS" | chpasswd
 # Add user to groups
 usermod -a -G sudo,x2gouser $USERNAME
 
+# Enable xrender in Firefox ESR
+echo 'pref("gfx.xrender.enabled", true);' >> /etc/firefox-esr/firefox-esr.js
+
+# Enable Google by default as homepage
+echo 'pref("browser.startup.homepage", "https://google.com");' >> /etc/firefox-esr/firefox-esr.js
+
 # Allow sudo without entering the password
 if [ "$ENTER_PASS" = false ]; then
   echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
