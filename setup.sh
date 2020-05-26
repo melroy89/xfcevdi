@@ -22,11 +22,23 @@ echo "$USERNAME:$PASS" | chpasswd
 # Add user to groups
 usermod -a -G sudo,x2gouser $USERNAME
 
-# Enable xrender in Firefox ESR
+## Additional Firefox settings
+# Enable xrender in Firefox ESR (very useful for X2Go performance)
 echo 'pref("gfx.xrender.enabled", true);' >> /etc/firefox-esr/firefox-esr.js
-
 # Enable Google by default as homepage
 echo 'pref("browser.startup.homepage", "https://google.com");' >> /etc/firefox-esr/firefox-esr.js
+# Start homepage directly
+echo 'pref("browser.startup.firstrunSkipsHomepage", false);' >> /etc/firefox-esr/firefox-esr.js
+# Do not show 'what is new'
+echo 'pref("browser.startup.homepage_override.mstone", "ignore");' >> /etc/firefox-esr/firefox-esr.js
+# Empty welcome URL
+echo 'pref("startup.homepage_welcome_url", "");' >> /etc/firefox-esr/firefox-esr.js
+# Disable first run infobar
+echo 'pref("toolkit.telemetry.reportingpolicy.firstRun", false);' >> /etc/firefox-esr/firefox-esr.js
+# No reports will be send (won't ask for privacy policy as well anymore)
+echo 'pref("datareporting.policy.dataSubmissionEnabled", false);' >> /etc/firefox-esr/firefox-esr.js
+# Empty firstRun URL
+echo 'pref("datareporting.policy.firstRunURL", "");' >> /etc/firefox-esr/firefox-esr.js
 
 # Allow sudo without entering the password
 if [ "$ENTER_PASS" = false ]; then
