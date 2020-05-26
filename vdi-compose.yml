@@ -17,4 +17,4 @@ services:
     ports:
       - "2222:22"
     network_mode: bridge    
-    restart: always
+    restart: unless-stopped
