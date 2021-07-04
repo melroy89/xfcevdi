@@ -23,7 +23,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libsasl2-modules-db libsqlite3-0 libssl1.1 \
     lsb-base pinentry-curses readline-common \
     apt-transport-https ca-certificates curl \
-    software-properties-common apt-utils net-tools
+    software-properties-common apt-utils net-tools ubuntu-keyring
 
 ## Add additional repositories/components (software-properties-common is required to be installed)
 # Add contrib and non-free distro components
@@ -31,11 +31,11 @@ RUN apt-add-repository contrib && apt-add-repository non-free
 # Add Debian backports repo for LibreOffice and Papirus icons
 RUN add-apt-repository -s "deb http://deb.debian.org/debian buster-backports main contrib non-free"
 # Add Linux Mint repo for Mint-Y-Dark theme
-RUN apt-key adv --recv-keys --keyserver keys.gnupg.net A6616109451BBBF2
+RUN apt-key adv --recv-keys --keyserver keyserver.ubuntu.com A6616109451BBBF2
 RUN apt-add-repository -s 'deb http://packages.linuxmint.com debbie main'
 
 # Add X2Go apt list
-RUN apt-key adv --recv-keys --keyserver keys.gnupg.net E1F958385BFE2B6E
+RUN apt-key adv --recv-keys --keyserver keyserver.ubuntu.com E1F958385BFE2B6E
 COPY ./configs/x2go.list /etc/apt/sources.list.d/x2go.list
 
 ## Install X2Go server and session
