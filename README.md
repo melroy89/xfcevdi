@@ -24,17 +24,9 @@ Or an example with Papirus icons:
 
 *Note:* You can always remove/install additional packages. By using docker container and apt-get command line (depending on your setup, this won't be permanent) or ideally by changing the [Dockerfile](Dockerfile). And optionally adapt [XFCE settings script](xfce_settings.sh) to your needs. Eg. like install & use Papirus icons instead.
 
-## Build
-
-Build the image locally, via:
-
-```sh
-docker build --tag danger89/xfcevdi_x2go .
-```
-
-Or when you have [apt-cacher](http://manpages.ubuntu.com/manpages/focal/man8/apt-cacher.8.html) proxy installed, use `APT_PROXY` parameter to set the proxy URL: `docker build --build-arg APT_PROXY=http://melroy-pc:3142 --tag danger89/xfcevdi_x2go .`
-
 ## Usage
+
+*Note:* If the image is not yet available on your system, the Docker image will be retrieved from [DockerHub](https://hub.docker.com/r/danger89/xfcevdi_x2go) by default.
 
 Start the docker container using (username: `user` and password will be auto-generated):
 
@@ -47,6 +39,18 @@ Or with the username `melroy` with password `abc`:
 ```sh
 docker run --shm-size 2g -it -p 2222:22 -e USERNAME=melroy -e PASS=abc danger89/xfcevdi_x2go:latest
 ```
+
+## Build
+
+You do not need to build the image, instead you can use [the dockerhub image](https://hub.docker.com/r/danger89/xfcevdi_x2go) if you want.
+
+Build the image locally, via:
+
+```sh
+docker build --tag danger89/xfcevdi_x2go .
+```
+
+Or when you have [apt-cacher](http://manpages.ubuntu.com/manpages/focal/man8/apt-cacher.8.html) proxy installed, use `APT_PROXY` parameter to set the proxy URL: `docker build --build-arg APT_PROXY=http://melroy-pc:3142 --tag danger89/xfcevdi_x2go .`
 
 ### Docker compose
 
