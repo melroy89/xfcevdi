@@ -32,7 +32,7 @@ Build the image locally, via:
 docker build --tag danger89/xfcevdi_x2go .
 ```
 
-Or when you have [apt-cacher](http://manpages.ubuntu.com/manpages/focal/man8/apt-cacher.8.html) proxy installed, use `APT_PROXY` parameter to set the proxy URL: `docker build --build-arg APT_PROXY=http://melroy-pc:3142 --tag vdi .`
+Or when you have [apt-cacher](http://manpages.ubuntu.com/manpages/focal/man8/apt-cacher.8.html) proxy installed, use `APT_PROXY` parameter to set the proxy URL: `docker build --build-arg APT_PROXY=http://melroy-pc:3142 --tag danger89/xfcevdi_x2go .`
 
 ## Usage
 
@@ -88,8 +88,4 @@ Once you open the client, create a new session by providing the following settin
 * SSH port: `2222` (default port)
 * Session type: `XFCE` (select from drop-down menu)
 
-Once you try to connect, accept the new SSH host key and you'll require to enter a password (by default the passwords are generated!).
-
-## TODOs
-
-* Add PulseAudio plugin to panel
+Once you try to connect, accept the new SSH host key and you'll require to enter a password (by default the **passwords are auto-generated**!).
