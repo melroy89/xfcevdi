@@ -10,17 +10,17 @@ By utilizing [Docker containers](https://www.docker.com/resources/what-container
 
 By using the [X2Go protocol](https://wiki.x2go.org/) it's easy to connect/share sessions between the client and the server. Which allows remote working or any other task you might want do remotely in a windowing system.
 
-The image contains a [docker GNU/Linux Debian](https://hub.docker.com/_/debian) (buster) operating system, together with XFCE4 desktop environment. The required X2Goserver/X2Gosession are already pre-installed.
+The image contains a [docker GNU/Linux Debian](https://hub.docker.com/_/debian) (bullseye) operating system, together with XFCE4 desktop environment. The required X2Goserver/X2Gosession are already pre-installed.
 
 In fact, the image has alot of packages installed you properly want, including but not limited to: `Firefox`, `LibreOffice`, `gnome-calculator`, `archiver`, `file manager`, `text editor`, `image viewer`, `htop`, `clipboard manager` and much more.
 
 Last but not least, the image is preconfigured with a nice dark-theme (Breeze-Dark), window theme (Mint-Y-Dark) as well as a nice looking icon set (Mint-Y-Dark-Aqua) and uses Ubuntu fonts by default. See below an preview:
 
-![](preview.png)
+![Preview 1](preview.png)
 
 Or an example with Papirus icons:
 
-![](preview_papirus.png)
+![Preview 2](preview_papirus.png)
 
 *Note:* You can always remove/install additional packages. By using docker container and apt-get command line (depending on your setup, this won't be permanent) or ideally by changing the [Dockerfile](Dockerfile). And optionally adapt [XFCE settings script](xfce_settings.sh) to your needs. Eg. like install & use Papirus icons instead.
 
@@ -29,24 +29,23 @@ Or an example with Papirus icons:
 Build the image locally, via:
 
 ```sh
-docker build --tag vdi .
+docker build --tag danger89/xfcevdi_x2go .
 ```
 
-Or when you have [apt-cacher](http://manpages.ubuntu.com/manpages/focal/man8/apt-cacher.8.html) proxy installed, use `APT_PROXY` parameter to set the proxy URL: `docker build --build-arg APT_PROXY=http://melroy-pc:3142 --tag vdi .`
-
+Or when you have [apt-cacher](http://manpages.ubuntu.com/manpages/focal/man8/apt-cacher.8.html) proxy installed, use `APT_PROXY` parameter to set the proxy URL: `docker build --build-arg APT_PROXY=http://melroy-pc:3142 --tag danger89/xfcevdi_x2go .`
 
 ## Usage
 
 Start the docker container using (username: `user` and password will be auto-generated):
 
 ```sh
-docker run --shm-size 2g -it -p 2222:22 vdi:latest
+docker run --shm-size 2g -it -p 2222:22 danger89/xfcevdi_x2go:latest
 ```
 
 Or with the username `melroy` with password `abc`:
 
 ```sh
-docker run --shm-size 2g -it -p 2222:22 -e USERNAME=melroy -e PASS=abc vdi:latest
+docker run --shm-size 2g -it -p 2222:22 -e USERNAME=melroy -e PASS=abc danger89/xfcevdi_x2go:latest
 ```
 
 ### Docker compose
@@ -89,8 +88,4 @@ Once you open the client, create a new session by providing the following settin
 * SSH port: `2222` (default port)
 * Session type: `XFCE` (select from drop-down menu)
 
-Once you try to connect, accept the new SSH host key and you'll require to enter a password (by default the passwords are generated!).
-
-## TODOs
-
-* Add PulseAudio plugin to panel
+Once you try to connect, accept the new SSH host key and you'll require to enter a password (by default the **passwords are auto-generated**!).

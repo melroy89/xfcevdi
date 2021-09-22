@@ -1,4 +1,4 @@
 # X2Go Repository (release builds)
-deb http://packages.x2go.org/debian buster extras main
+deb http://packages.x2go.org/debian bullseye extras main
 # X2Go Repository (sources of release builds)
-deb-src http://packages.x2go.org/debian buster extras main
+deb-src http://packages.x2go.org/debian bullseye extras main

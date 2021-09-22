@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   xfcevdi:
-    image: vdi:latest
+    image: danger89/xfcevdi_x2go:latest
     tty: true
     container_name: melroy_vdi
     environment:

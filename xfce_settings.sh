@@ -11,6 +11,9 @@ if [ ! -f /home/$USER/.local/.xfce_settings_done ]; then
   xfconf-query -c xfwm4 -p /general/theme -s "Mint-Y-Dark-Blue"
   xfconf-query -c xfwm4 -p /general/title_font -s "Ubuntu Medium 10"
 
+  # Disable XFCE Compositor
+  xfconf-query -c xfwm4 -p /general/use_compositing -t bool -s false
+
   # Move terminalrc config to correct location
   mkdir -p /home/$USER/.config/xfce4/terminal/
   cp -rf /app/terminalrc /home/$USER/.config/xfce4/terminal/
@@ -24,8 +27,6 @@ if [ ! -f /home/$USER/.local/.xfce_settings_done ]; then
 
   # Change bottom-panel to intelligently-hide
   xfconf-query -c xfce4-panel -p /panels/panel-2/autohide-behavior -n -t int -s 1
-
-  # TODO: Add PulseAudio plugin to panel
   
   # Reset panel(s) once
   xfce4-panel -r

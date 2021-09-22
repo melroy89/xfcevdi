@@ -1,4 +1,4 @@
-FROM debian:buster
+FROM debian:bullseye
 
 LABEL maintainer="melroy@melroy.org"
 
@@ -19,7 +19,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     gpg-wks-client gpg-wks-server gpgconf \
     gpgsm libassuan0 libksba8 \
     libldap-2.4-2 libldap-common libnpth0 \
-    libreadline7 libsasl2-2 libsasl2-modules \
+    libreadline8 libsasl2-2 libsasl2-modules \
     libsasl2-modules-db libsqlite3-0 libssl1.1 \
     lsb-base pinentry-curses readline-common \
     apt-transport-https ca-certificates curl \
@@ -28,14 +28,17 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 ## Add additional repositories/components (software-properties-common is required to be installed)
 # Add contrib and non-free distro components
 RUN apt-add-repository contrib && apt-add-repository non-free
-# Add Debian backports repo for LibreOffice and Papirus icons
-RUN add-apt-repository -s "deb http://deb.debian.org/debian buster-backports main contrib non-free"
+# Add Debian backports repo for XFCE thunar-font-manager 
+RUN add-apt-repository -s "deb http://deb.debian.org/debian bullseye-backports main contrib non-free"
 # Add Linux Mint repo for Mint-Y-Dark theme
-RUN apt-key adv --recv-keys --keyserver keys.gnupg.net A6616109451BBBF2
+RUN apt-key adv --recv-keys --keyserver keyserver.ubuntu.com A6616109451BBBF2
+# TODO: Migrate away from apt-key to gpg files
+# RUN curl https://example.com/key/repo-key.gpg | gpg --dearmor > /etc/apt/trusted.gpg.d/linuxmint.gpg
 RUN apt-add-repository -s 'deb http://packages.linuxmint.com debbie main'
 
 # Add X2Go apt list
-RUN apt-key adv --recv-keys --keyserver keys.gnupg.net E1F958385BFE2B6E
+# TODO: Migrate away from apt-key to gpg files
+RUN apt-key adv --recv-keys --keyserver keyserver.ubuntu.com E1F958385BFE2B6E
 COPY ./configs/x2go.list /etc/apt/sources.list.d/x2go.list
 
 ## Install X2Go server and session
@@ -68,23 +71,22 @@ RUN apt-get install -y --no-install-recommends \
     x11-xkb-utils
 ## Install XFCE4
 RUN apt-get upgrade -y && apt-get install -y \
-    xfce4-session xfwm4 xfce4-panel \
+    xfwm4 xfce4-session xfce4-panel \
     xfce4-terminal xfce4-appfinder \
-    thunar tumbler xfce4-clipman-plugin \
-    xfce4-screenshooter xfce4-notifyd xfce4-pulseaudio-plugin \
-    xfce4-statusnotifier-plugin xfce4-datetime-plugin xfce4-notes-plugin \
-    xarchiver thunar-archive-plugin xfce4-whiskermenu-plugin
-# TODO: request for buster-backports for mugshot
+    xfce4-goodies xfce4-pulseaudio-plugin \
+    xfce4-statusnotifier-plugin xfce4-whiskermenu-plugin \
+    thunar tumbler xarchiver \
+    mugshot thunar-archive-plugin
 
 ## Add themes & fonts
 RUN apt-get install -y --no-install-recommends fonts-ubuntu breeze-gtk-theme mint-themes
-# Don't add papirus icons (can be comment-out)
-#RUN apt install -y -t buster-backports papirus-icon-theme
+# Don't add papirus icons (can be comment-out if you want)
+#RUN apt install -y papirus-icon-theme
 
 ## Add additional applications
 RUN apt-get install -y --no-install-recommends firefox-esr htop gnome-calculator mousepad ristretto
 # Add Office
-RUN apt install -y -t buster-backports libreoffice-base libreoffice-base-core libreoffice-common libreoffice-core libreoffice-base-drivers \
+RUN apt install -y libreoffice-base libreoffice-base-core libreoffice-common libreoffice-core libreoffice-base-drivers \
     libreoffice-nlpsolver libreoffice-script-provider-bsh libreoffice-script-provider-js libreoffice-script-provider-python libreoffice-style-colibre \
     libreoffice-writer libreoffice-calc libreoffice-impress libreoffice-draw libreoffice-math 
 
