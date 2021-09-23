@@ -23,7 +23,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libsasl2-modules-db libsqlite3-0 libssl1.1 \
     lsb-base pinentry-curses readline-common \
     apt-transport-https ca-certificates curl \
-    software-properties-common apt-utils net-tools
+    software-properties-common apt-utils net-tools ubuntu-keyring
 
 ## Add additional repositories/components (software-properties-common is required to be installed)
 # Add contrib and non-free distro components
