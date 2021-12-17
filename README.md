@@ -28,13 +28,13 @@ Or an example with Papirus icons:
 
 *Note:* If the image is not yet available on your system, the Docker image will be retrieved from [DockerHub](https://hub.docker.com/r/danger89/xfcevdi_x2go) by default.
 
-Start the docker container using (username: `user` and password will be auto-generated):
+Start the docker container using (with username: `user`, password: *is auto-generated*, port: `2222`):
 
 ```sh
 docker run --shm-size 2g -it -p 2222:22 danger89/xfcevdi_x2go:latest
 ```
 
-Or with the username `melroy` with password `abc`:
+Or with the username `melroy` with password `abc` on host `localhost` and port: `2222`:
 
 ```sh
 docker run --shm-size 2g -it -p 2222:22 -e USERNAME=melroy -e PASS=abc danger89/xfcevdi_x2go:latest
