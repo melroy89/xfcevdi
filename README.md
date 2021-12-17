@@ -22,8 +22,9 @@ Or an example with Papirus icons:
 
 ![Preview 2](preview_papirus.png)
 
-*Note:* You can always remove/install additional packages. By using docker container and apt-get command line (depending on your setup, this won't be permanent) or ideally by changing [Dockerfile](Dockerfile) or extending the Docker image via: `FROM danger89/xfcevdi_x2go` in your own Dockerfile.   
-  Optionally adapt the [XFCE settings script](xfce_settings.sh) to your needs. Eg. like when you installed Papirus icon theme and want to use the Papirus icons instead.
+*Note 1:* You can always remove/install additional packages. By using the Docker container and apt-get command line (this won't be permanent). Or ideally, by changing [Dockerfile](Dockerfile) or extending the Docker image instead via: `FROM danger89/xfcevdi_x2go` in your own Dockerfile. 
+
+*Note 2:* Optionally adapt the [XFCE settings script](xfce_settings.sh) to your needs. Eg. when you installed the Papirus icon theme and use the Papirus icons instead Mint-Y-Dark-Aqua icons.
 
 ## Usage
 
