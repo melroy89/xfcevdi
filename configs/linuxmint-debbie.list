@@ -1,1 +1,1 @@
-deb [signed-by=/usr/share/keyrings/linuxmint-archive-keyring.gpg] http://packages.linuxmint.com debbie main
+deb http://packages.linuxmint.com debbie main

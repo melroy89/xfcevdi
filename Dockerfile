@@ -35,13 +35,13 @@ RUN add-apt-repository -y "deb http://deb.debian.org/debian bullseye-backports m
 RUN gpg --keyserver keyserver.ubuntu.com --recv-keys 302F0738F465C1535761F965A6616109451BBBF2 972FD88FA0BAFB578D0476DFE1F958385BFE2B6E
 
 # Add Linux Mint GPG keyring file (for the Mint-Y-Dark theme)
-RUN gpg --export 302F0738F465C1535761F965A6616109451BBBF2 | tee /usr/share/keyrings/linuxmint-archive-keyring.gpg > /dev/null
+RUN gpg --export 302F0738F465C1535761F965A6616109451BBBF2 | tee  /etc/apt/trusted.gpg.d/linuxmint-archive-keyring.gpg > /dev/null
 
 # Add Linux Mint Debbie repo source file
 COPY ./configs/linuxmint-debbie.list /etc/apt/sources.list.d/linuxmint-debbie.list
 
 # Add X2Go GPG keyring file
-RUN gpg --export 972FD88FA0BAFB578D0476DFE1F958385BFE2B6E | tee /usr/share/keyrings/x2go-archive-keyring.gpg > /dev/null
+RUN gpg --export 972FD88FA0BAFB578D0476DFE1F958385BFE2B6E | tee /etc/apt/trusted.gpg.d/x2go-archive-keyring.gpg > /dev/null
 
 # Add X2Go repo source file
 COPY ./configs/x2go.list /etc/apt/sources.list.d/x2go.list
@@ -53,6 +53,7 @@ RUN apt-get install -y x2goserver x2goserver-xsession
 RUN apt-get install -y --no-install-recommends \
     openssh-server \
     pulseaudio \
+    dbus-x11 \
     locales \
     rsyslog \
     pavucontrol \

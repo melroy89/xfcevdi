@@ -52,7 +52,13 @@ Build the image locally, via:
 docker build --tag danger89/xfcevdi_x2go .
 ```
 
-Or when you have [apt-cacher](http://manpages.ubuntu.com/manpages/jammy/man8/apt-cacher.8.html) or [apt-cacher-ng](http://manpages.ubuntu.com/manpages/jammy/en/man8/apt-cacher-ng.8.html) proxy installed, use `APT_PROXY` parameter to set the proxy URL: `docker build --build-arg APT_PROXY=http://melroy-pc:3142 --tag danger89/xfcevdi_x2go .`. Where `melroy-pc` is your hostname.
+### Apt-Cacher
+
+When you have [apt-cacher](http://manpages.ubuntu.com/manpages/jammy/man8/apt-cacher.8.html) or [apt-cacher-ng](http://manpages.ubuntu.com/manpages/jammy/en/man8/apt-cacher-ng.8.html) proxy installed, use `APT_PROXY` parameter to set the proxy URL; where `melroy-pc` is *your* hostname:
+
+```sh
+docker build --build-arg APT_PROXY=http://melroy-pc:3142 --tag danger89/xfcevdi_x2go .
+```
 
 ### Docker compose
 
