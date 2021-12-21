@@ -26,19 +26,24 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     software-properties-common apt-utils net-tools
 
 ## Add additional repositories/components (software-properties-common is required to be installed)
-# Add contrib and non-free distro components
-RUN apt-add-repository contrib && apt-add-repository non-free
+# Add contrib and non-free distro components (deb822-style format)
+RUN apt-add-repository -y contrib && apt-add-repository -y non-free
 # Add Debian backports repo for XFCE thunar-font-manager 
-RUN add-apt-repository -s "deb http://deb.debian.org/debian bullseye-backports main contrib non-free"
-# Add Linux Mint repo for Mint-Y-Dark theme
-RUN apt-key adv --recv-keys --keyserver keyserver.ubuntu.com A6616109451BBBF2
-# TODO: Migrate away from apt-key to gpg files
-# RUN curl https://example.com/key/repo-key.gpg | gpg --dearmor > /etc/apt/trusted.gpg.d/linuxmint.gpg
-RUN apt-add-repository -s 'deb http://packages.linuxmint.com debbie main'
+RUN add-apt-repository -y "deb http://deb.debian.org/debian bullseye-backports main contrib non-free"
 
-# Add X2Go apt list
-# TODO: Migrate away from apt-key to gpg files
-RUN apt-key adv --recv-keys --keyserver keyserver.ubuntu.com E1F958385BFE2B6E
+# Retrieve third party GPG keys from keyserver
+RUN gpg --keyserver keyserver.ubuntu.com --recv-keys 302F0738F465C1535761F965A6616109451BBBF2 972FD88FA0BAFB578D0476DFE1F958385BFE2B6E
+
+# Add Linux Mint GPG keyring file (for the Mint-Y-Dark theme)
+RUN gpg --export 302F0738F465C1535761F965A6616109451BBBF2 | tee /usr/share/keyrings/linuxmint-archive-keyring.gpg > /dev/null
+
+# Add Linux Mint Debbie repo source file
+COPY ./configs/linuxmint-debbie.list /etc/apt/sources.list.d/linuxmint-debbie.list
+
+# Add X2Go GPG keyring file
+RUN gpg --export 972FD88FA0BAFB578D0476DFE1F958385BFE2B6E | tee /usr/share/keyrings/x2go-archive-keyring.gpg > /dev/null
+
+# Add X2Go repo source file
 COPY ./configs/x2go.list /etc/apt/sources.list.d/x2go.list
 
 ## Install X2Go server and session
