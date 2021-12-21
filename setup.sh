@@ -6,6 +6,7 @@ ROOT_PASS=${ROOT_PASS:-$(pwgen -s 12 1)}
 ALLOW_ROOT_SSH=${ALLOW_ROOT_SSH:-false}
 ENTER_PASS=${ENTER_PASS:-false}
 
+# Change SSH settings
 sed -i "s/#PasswordAuthentication/PasswordAuthentication/g" /etc/ssh/sshd_config
 sed -i 's/#HostKey/HostKey/g' /etc/ssh/sshd_config
 if [ "$ALLOW_ROOT_SSH" = true ]; then
@@ -21,6 +22,9 @@ echo "$USERNAME:$PASS" | chpasswd
 
 # Add user to groups
 usermod -a -G sudo,x2gouser $USERNAME
+
+# Create D-bus daemon runtime directory
+mkdir -p /run/dbus
 
 ## Additional Firefox settings
 # Enable xrender in Firefox ESR (very useful for X2Go performance)
@@ -45,6 +49,7 @@ if [ "$ENTER_PASS" = false ]; then
   echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 fi
 
+# Print hello in start-up
 cat <<-EOT > "/root/.bashrc"
 echo -e "Thank you for using Melroy's VDI docker image!\n"
 echo "Info: Root password is: $ROOT_PASS"

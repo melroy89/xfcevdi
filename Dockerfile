@@ -52,6 +52,7 @@ RUN apt-get install -y x2goserver x2goserver-xsession
 ## Install important (or often used) dependency packages
 RUN apt-get install -y --no-install-recommends \
     openssh-server \
+    pulseaudio \
     locales \
     rsyslog \
     pavucontrol \

@@ -3,5 +3,5 @@
 
 if [ -n "$APT_PROXY" ]; then
   sed -i 's,'PROXY_URL','"$APT_PROXY"',' /app/apt.conf
-  cp /app/apt.conf /etc/apt
+  cp /app/apt.conf /etc/apt/apt.conf.d/02proxy
 fi
