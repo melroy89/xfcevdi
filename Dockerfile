@@ -12,7 +12,7 @@ COPY ./configs/apt.conf ./
 COPY ./apt_proxy.sh ./
 RUN ./apt_proxy.sh
 
-## First install basic require packages
+## First install basic required packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
     dirmngr gnupg gnupg-l10n \
     gnupg-utils gpg gpg-agent \
@@ -53,10 +53,10 @@ RUN apt-get install -y x2goserver x2goserver-xsession
 RUN apt-get install -y --no-install-recommends \
     openssh-server \
     pulseaudio \
+    pavucontrol \
     dbus-x11 \
     locales \
     rsyslog \
-    pavucontrol \
     git \
     wget \
     sudo \
@@ -76,26 +76,37 @@ RUN apt-get install -y --no-install-recommends \
     xz-utils \
     x11-utils \
     x11-xkb-utils
-## Install XFCE4
-RUN apt-get upgrade -y && apt-get install -y \
-    xfwm4 xfce4-session xfce4-panel \
-    xfce4-terminal xfce4-appfinder \
-    xfce4-goodies xfce4-pulseaudio-plugin \
-    xfce4-statusnotifier-plugin xfce4-whiskermenu-plugin \
-    thunar tumbler xarchiver \
-    mugshot thunar-archive-plugin
 
 ## Add themes & fonts
 RUN apt-get install -y --no-install-recommends fonts-ubuntu breeze-gtk-theme mint-themes
 # Don't add papirus icons (can be comment-out if you want)
 #RUN apt install -y papirus-icon-theme
 
-## Add additional applications
-RUN apt-get install -y --no-install-recommends firefox-esr htop gnome-calculator mousepad ristretto
-# Add Office
+# Add LibreOffice
 RUN apt install -y libreoffice-base libreoffice-base-core libreoffice-common libreoffice-core libreoffice-base-drivers \
     libreoffice-nlpsolver libreoffice-script-provider-bsh libreoffice-script-provider-js libreoffice-script-provider-python libreoffice-style-colibre \
     libreoffice-writer libreoffice-calc libreoffice-impress libreoffice-draw libreoffice-math 
+
+## Install XFCE4
+# Install XFCE4, including XFCE panels, terminal, screenshooter, task manager, notify daemon, dbus, locker and plugins. 
+# ! But we do NOT install xfce4-goodies; since this will install xfburn (not needed) and xfce4-statusnotifier-plugin (deprecated) !
+RUN apt-get upgrade -y && apt-get install -y --no-install-recommends \
+    xfwm4 xfce4-session default-dbus-session-bus xfdesktop4 light-locker \
+    xfce4-panel xfce4-terminal librsvg2-common \
+    xfce4-dict xfce4-screenshooter xfce4-appfinder \
+    xfce4-taskmanager xfce4-notifyd xfce4-whiskermenu-plugin \
+    xfce4-pulseaudio-plugin xfce4-clipman-plugin xfce4-indicator-plugin
+
+# Install additional apps including recommendations, mainly: file manager, archive manager and image viewer
+RUN apt-get install -y \
+    ristretto tumbler xarchiver \
+    thunar thunar-archive-plugin thunar-media-tags-plugin
+
+## Add more applications
+# Most importanly: browser, calculator, file editor, video player, profile manager
+RUN apt-get install -y --no-install-recommends \
+    firefox-esr htop gnome-calculator \
+    mousepad celluloid mugshot
 
 # Update locales, generate new SSH host keys and clean-up (keep manpages)
 RUN update-locale
