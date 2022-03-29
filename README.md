@@ -6,15 +6,15 @@ Docker image for running [Debian](https://hub.docker.com/_/debian) and [XFCE](ht
 
 This docker image enables you to start one or more instances of a Virtual Desktop Infrastructure (VDI). Without the need of VM's!
 
-* By utilizing [Docker containers](https://www.docker.com/resources/what-container), there will be **NO** boot of whole operating system (like VMs do), instead docker will use the OS kernel resources and shares them with the docker container. Resulting in much faster start-up times than VMs can every do.
+- By utilizing [Docker containers](https://www.docker.com/resources/what-container), there will be **NO** boot of whole operating system (like VMs do), instead docker will use the OS kernel resources and shares them with the docker container. Resulting in much faster start-up times than VMs can every do.
 
-* By using the [X2Go protocol](https://wiki.x2go.org/) it's easy to connect/share sessions between the client and the server. Which allows remote working or any other task you might want do remotely in a windowing system.
+- By using the [X2Go protocol](https://wiki.x2go.org/) it's easy to connect/share sessions between the client and the server. Which allows remote working or any other task you might want do remotely in a windowing system.
 
-* The image contains a [docker GNU/Linux Debian](https://hub.docker.com/_/debian) (bullseye) operating system, together with XFCE4 desktop environment. The required X2Goserver/X2Gosession are already pre-installed.
+- The image contains a [docker GNU/Linux Debian](https://hub.docker.com/_/debian) (bullseye) operating system, together with XFCE4 desktop environment. The required X2Goserver/X2Gosession are already pre-installed.
 
-* In fact, this Docker image has alot of packages pre-installed you probably want anyway, including but not limited to: `Firefox`, `LibreOffice`, `gnome-calculator`, `archiver`, `file manager`, `text editor`, `image viewer`, `htop`, `clipboard manager` and much more.
+- In fact, this Docker image has alot of packages pre-installed you probably want anyway, including but not limited to: `Firefox`, `LibreOffice`, `gnome-calculator`, `archiver`, `file manager`, `text editor`, `image viewer`, `htop`, `clipboard manager` and much more.
 
-* Last but not least, the image is preconfigured with a nice dark-theme (Breeze-Dark), window theme (Mint-Y-Dark) as well as a nice looking icon set (Mint-Y-Dark-Aqua) and uses Ubuntu fonts by default. See below an preview:
+- Last but not least, the image is preconfigured with a nice dark-theme (Breeze-Dark), window theme (Mint-Y-Dark) as well as a nice looking icon set (Mint-Y-Dark-Aqua) and uses Ubuntu fonts by default. See below an preview:
 
 ![Preview 1](preview.png)
 
@@ -44,9 +44,9 @@ docker run --shm-size 2g -it -p 2222:22 -e USERNAME=melroy -e PASS=abc danger89/
 
 ## Build
 
-You do not need to build the image, instead you can use [the dockerhub image](https://hub.docker.com/r/danger89/xfcevdi_x2go) if you want.
+You do _not_ need to build the image, try to use the pre-build [DockerHub image](https://hub.docker.com/r/danger89/xfcevdi_x2go).
 
-Build the image locally, via:
+If you want, you could build the image locally, using the command:
 
 ```sh
 docker build --tag danger89/xfcevdi_x2go .
@@ -65,7 +65,7 @@ docker build --build-arg APT_PROXY=http://melroy-pc:3142 --tag danger89/xfcevdi_
 
 ### Docker compose
 
-You can also use a docker-compose file!
+You can also make use of [Docker compose](https://docs.docker.com/compose/)!
 See the [docker compose file](vdi-compose.yml) within this git repository.
 
 ### Environment variables
@@ -91,16 +91,16 @@ Available environment variables (use `-e` flag during `docker run`) are:
 
 X2Go has two clients available to choose from:
 
-* X2Go Client (recommended)
-* PyHoca-GUI
+- X2Go Client (recommended)
+- PyHoca-GUI
 
 Which can both be [downloaded from their site](https://wiki.x2go.org/doku.php/download:start). Clients are available for Windows/Mac and/or GNU/Linux operating systems.
 
 Once you open the client, create a new session by providing the following settings (default settings):
 
-* Host: host IP addresss (or domain name or `localhost`)
-* Login: `user` (default username)
-* SSH port: `2222` (default port)
-* Session type: `XFCE` (select from drop-down menu)
+- Host: host IP addresss (or domain name or `localhost`)
+- Login: `user` (default username)
+- SSH port: `2222` (default port)
+- Session type: `XFCE` (select from drop-down menu)
 
 Once you try to connect, accept the new SSH host key and you'll require to enter a password (by default the **passwords are auto-generated**!).
