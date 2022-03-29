@@ -60,7 +60,7 @@ fi
 
 # Print hello in start-up, including VERSION number
 cat <<-EOT > "/root/.bashrc"
-echo -e "Thank you for using Melroy's VDI Docker image v1.5!\n"
+echo -e "Thank you for using Melroy's VDI XFCE Docker image!\n"
 echo "Info: Root password is: $ROOT_PASS"
 echo "Info: New user ($USERNAME) has password: $PASS"
 EOT
