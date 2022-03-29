@@ -104,3 +104,9 @@ Once you open the client, create a new session by providing the following settin
 - Session type: `XFCE` (select from drop-down menu)
 
 Once you try to connect, accept the new SSH host key and you'll require to enter a password (by default the **passwords are auto-generated**!).
+
+## Common issues
+
+### Host key verification failed
+
+This error means that you are using an old SSH host key. Try not to terminate the session and when X2Go client ask you to update the host key, choose 'yes'.
