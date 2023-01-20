@@ -43,13 +43,13 @@ echo 'pref("datareporting.policy.dataSubmissionEnabled", false);' >>/etc/firefox
 echo 'pref("datareporting.policy.firstRunURL", "");' >>/etc/firefox-esr/firefox-esr.js
 
 ## Setting-up access control
-GROUPS="x2gouser"
+GROUP_LIST="x2gouser"
 if [ "$ALLOW_SUDO" = "yes" ]; then
-  GROUPS="$GROUPS,sudo"
+  GROUP_LIST="$GROUP_LIST,sudo"
 fi
 
 # Add new user
-useradd -ms /bin/bash -u "$USER_ID" -G "$GROUPS" "$USERNAME"
+useradd -ms /bin/bash -u "$USER_ID" -G "$GROUP_LIST" "$USERNAME"
 echo "$USERNAME:$PASS" | chpasswd
 
 # Allow user to execute apt commands (install new software)
