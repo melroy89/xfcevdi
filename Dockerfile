@@ -2,6 +2,15 @@ FROM debian:bullseye
 
 LABEL maintainer="melroy@melroy.org"
 
+# Default (run-time) environment variables
+# Used during initial setup
+ENV USERNAME=user
+ENV USER_ID=1000
+ENV ALLOW_APT=yes
+ENV ENTER_PASS=no
+ENV ALLOW_SUDO=yes
+
+# Build arguments, _only_ used during Docker build
 ARG DEBIAN_FRONTEND=noninteractive
 ARG APT_PROXY
 
@@ -9,7 +18,7 @@ WORKDIR /app
 
 # Enable APT proxy (if APT_PROXY is set)
 COPY ./configs/apt.conf ./
-COPY ./apt_proxy.sh ./
+COPY ./scripts/apt_proxy.sh ./
 RUN ./apt_proxy.sh
 
 ## First install basic required packages
@@ -28,20 +37,20 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 ## Add additional repositories/components (software-properties-common is required to be installed)
 # Add contrib and non-free distro components (deb822-style format)
 RUN apt-add-repository -y contrib && apt-add-repository -y non-free
-# Add Debian backports repo for XFCE thunar-font-manager 
+# Add Debian backports repo for XFCE thunar-font-manager
 RUN add-apt-repository -y "deb http://deb.debian.org/debian bullseye-backports main contrib non-free"
 
 # Retrieve third party GPG keys from keyserver
 RUN gpg --keyserver keyserver.ubuntu.com --recv-keys 302F0738F465C1535761F965A6616109451BBBF2 972FD88FA0BAFB578D0476DFE1F958385BFE2B6E
 
 # Add Linux Mint GPG keyring file (for the Mint-Y-Dark theme)
-RUN gpg --export 302F0738F465C1535761F965A6616109451BBBF2 | tee  /etc/apt/trusted.gpg.d/linuxmint-archive-keyring.gpg > /dev/null
+RUN gpg --export 302F0738F465C1535761F965A6616109451BBBF2 | tee /etc/apt/trusted.gpg.d/linuxmint-archive-keyring.gpg >/dev/null
 
 # Add Linux Mint Debbie repo source file
 COPY ./configs/linuxmint-debbie.list /etc/apt/sources.list.d/linuxmint-debbie.list
 
 # Add X2Go GPG keyring file
-RUN gpg --export 972FD88FA0BAFB578D0476DFE1F958385BFE2B6E | tee /etc/apt/trusted.gpg.d/x2go-archive-keyring.gpg > /dev/null
+RUN gpg --export 972FD88FA0BAFB578D0476DFE1F958385BFE2B6E | tee /etc/apt/trusted.gpg.d/x2go-archive-keyring.gpg >/dev/null
 
 # Add X2Go repo source file
 COPY ./configs/x2go.list /etc/apt/sources.list.d/x2go.list
@@ -85,10 +94,10 @@ RUN apt-get install -y --no-install-recommends fonts-ubuntu breeze-gtk-theme min
 # Add LibreOffice
 RUN apt install -y libreoffice-base libreoffice-base-core libreoffice-common libreoffice-core libreoffice-base-drivers \
     libreoffice-nlpsolver libreoffice-script-provider-bsh libreoffice-script-provider-js libreoffice-script-provider-python libreoffice-style-colibre \
-    libreoffice-writer libreoffice-calc libreoffice-impress libreoffice-draw libreoffice-math 
+    libreoffice-writer libreoffice-calc libreoffice-impress libreoffice-draw libreoffice-math
 
 ## Install XFCE4
-# Install XFCE4, including XFCE panels, terminal, screenshooter, task manager, notify daemon, dbus, locker and plugins. 
+# Install XFCE4, including XFCE panels, terminal, screenshooter, task manager, notify daemon, dbus, locker and plugins.
 # ! But we do NOT install xfce4-goodies; since this will install xfburn (not needed) and xfce4-statusnotifier-plugin (deprecated) !
 RUN apt-get upgrade -y && apt-get install -y --no-install-recommends \
     xfwm4 xfce4-session default-dbus-session-bus xfdesktop4 light-locker \
@@ -110,12 +119,11 @@ RUN apt-get install -y --no-install-recommends \
 
 # Update locales, generate new SSH host keys and clean-up (keep manpages)
 RUN update-locale
-RUN rm -rf /etc/ssh/ssh_host_* \
-    && ssh-keygen -A
+RUN rm -rf /etc/ssh/ssh_host_* && ssh-keygen -A
 RUN apt-get clean -y && rm -rf /usr/share/doc/* /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/cache/apk/*
 
 # Update timezone to The Netherlands
-RUN echo 'Europe/Amsterdam' > /etc/timezone
+RUN echo 'Europe/Amsterdam' >/etc/timezone
 RUN unlink /etc/localtime && ln -s /usr/share/zoneinfo/Europe/Amsterdam /etc/localtime
 
 # Start default XFCE4 panels (don't ask for it)
@@ -128,12 +136,25 @@ COPY ./configs/xfce4-settings.desktop /etc/xdg/autostart/
 RUN sed -i "s/Hidden=.*/Hidden=false/" /etc/xdg/autostart/xfce4-clipman-plugin-autostart.desktop
 # Remove unnecessary existing start-up apps
 RUN rm -rf /etc/xdg/autostart/light-locker.desktop /etc/xdg/autostart/xscreensaver.desktop
-COPY ./setup.sh ./
+
+# Disable root shell
+RUN usermod -s /usr/sbin/nologin root
+
+# Create worker user (instead of root user)
+RUN useradd -G sudo -ms /bin/bash -u 1001 worker
+RUN echo "Defaults!/app/setup.sh setenv" >>/etc/sudoers
+# Limit the execute of the following commands of the worker user
+RUN echo "worker ALL=(root) NOPASSWD:/usr/sbin/service ssh start, /usr/sbin/service dbus start, /usr/sbin/service rsyslog start, /app/setup.sh" >>/etc/sudoers
+# Copy worker scripts
+COPY ./scripts/setup.sh ./
 COPY ./configs/terminalrc ./
 COPY ./configs/whiskermenu-1.rc ./
-COPY ./xfce_settings.sh ./
-COPY ./run.sh ./
+COPY ./scripts/xfce_settings.sh ./
+COPY ./scripts/run.sh ./
+
+# Run as worker
+USER worker
 
 EXPOSE 22
 
-CMD ./run.sh
+CMD ["/bin/bash", "./run.sh"]

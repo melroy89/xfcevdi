@@ -1,4 +1,4 @@
-# XFCE VDI (X2Go)
+# XFCE VDI (using X2Go)
 
 Docker image for running [Debian](https://hub.docker.com/_/debian) and [XFCE](https://www.xfce.org/) by leveraging the [X2Go protocol](https://wiki.x2go.org/doku.php/download:start).
 
@@ -22,72 +22,83 @@ Or an example with Papirus icons:
 
 ![Preview 2](preview_papirus.png)
 
-*Note 1:* You can always remove/install additional packages. By using the Docker container and apt-get command line (this won't be permanent). Or ideally, by changing [Dockerfile](Dockerfile) or extending the Docker image instead via: `FROM danger89/xfcevdi_x2go` in your own Dockerfile. 
+_Note 1:_ You can always remove/install additional packages. By using the Docker container and apt-get command line (this won't be permanent). Or ideally, by changing [Dockerfile](Dockerfile) or extending the Docker image instead via: `FROM danger89/xfcevdi_x2go` in your own Dockerfile.
 
-*Note 2:* Optionally adapt the [XFCE settings script](xfce_settings.sh) to your needs. Eg. when you installed the Papirus icon theme and you want to use use the Papirus icons instead Mint-Y-Dark-Aqua icons.
+_Note 2:_ Optionally adapt the [XFCE settings script](xfce_settings.sh) to your needs. Eg. when you installed the Papirus icon theme and you want to use use the Papirus icons instead Mint-Y-Dark-Aqua icons.
 
 ## Usage
 
-*Note:* If the image is not yet available on your system, the Docker image will be retrieved from [DockerHub](https://hub.docker.com/r/danger89/xfcevdi_x2go) by default.
+You could use the `docker` CLI or Docker Compose (`docker compose`).
 
-Start the docker container using (with username: `user`, password: *is auto-generated*, port: `2222`):
+_Note:_ The Docker image will be retrieved automatically from [DockerHub](https://hub.docker.com/r/danger89/xfcevdi_x2go).
 
-```sh
-docker run --shm-size 2g -it -p 2222:22 danger89/xfcevdi_x2go:latest
-```
+### Docker
 
-Or with the username `melroy` with password `abc` on host `localhost` and port: `2222`:
+Start the docker container using (with username: `user`, password: _is auto-generated_, port: `2222`):
 
 ```sh
-docker run --shm-size 2g -it -p 2222:22 -e USERNAME=melroy -e PASS=abc danger89/xfcevdi_x2go:latest
+docker run --shm-size 2g -it --rm -p 2222:22 danger89/xfcevdi_x2go:latest
 ```
 
-## Build
-
-You do _not_ need to build the image, try to use the pre-build [DockerHub image](https://hub.docker.com/r/danger89/xfcevdi_x2go).
-
-If you want, you could build the image locally, using the command:
+Or with the username `melroy` with password `abc` on port: `2222`:
 
 ```sh
-docker build --tag danger89/xfcevdi_x2go .
+docker run --shm-size 2g -it --rm -p 2222:22 -e USERNAME=melroy -e PASS=abc danger89/xfcevdi_x2go:latest
 ```
 
-### Apt-Cacher
+See "X2Go Clients" section below how to connect.
 
-When you have [apt-cacher](http://manpages.ubuntu.com/manpages/jammy/man8/apt-cacher.8.html) or [apt-cacher-ng](http://manpages.ubuntu.com/manpages/jammy/en/man8/apt-cacher-ng.8.html) proxy installed, use `APT_PROXY` parameter to set the proxy URL; where `melroy-pc` is *your* hostname:
+## Docker Compose
 
+You can also use of [Docker Compose](https://docs.docker.com/compose/)!
 
-**Important:** Be sure you configured `apt-cacher` correctly to accept incoming connections from Docker. Set: `allowed_hosts = *` in `/etc/apt-cacher/apt-cacher.conf` file.
+**Adapt** the [compose.yaml](compose.yaml) file to your needs, and start the Docker container using: `docker compose up`
 
-```sh
-docker build --build-arg APT_PROXY=http://melroy-pc:3142 --tag danger89/xfcevdi_x2go .
-```
+See "X2Go Clients" section below how to connect.
 
-### Docker compose
+_Note:_ If you installed Docker Compose manually using the script, then the script name is: `docker-compose` iso `docker compose`.
 
-You can also make use of [Docker compose](https://docs.docker.com/compose/)!
-See the [docker compose file](vdi-compose.yml) within this git repository.
+## Environment variables
 
-### Environment variables
+_Important:_ By default the newly created user is added to the `sudo` group, allowing to execute commands as root within the container.
+_Important:_ By default the user can install new software using `apt` (eg. `sudo apt install`), without providing it's password.
 
-Available environment variables (use `-e` flag during `docker run`) are:
+You can either change the environment variables using `-e` flag during `docker run` _or_ by changing just the `environment` section in the `compose.yaml` file.
 
-| Env. variable    | Type    | Description                                 | Default value          |
-|------------------|---------|---------------------------------------------|------------------------|
-| `USERNAME`       | string  | Provide another username                    | `user`                 |
-| `USER_ID`        | integer | Provide another GUID/user ID                | `1000`                 |
-| `PASS`           | string  | Change password for user                    | *auto-generated pass*  |
-| `ROOT_PASS`      | string  | Change password for root-user               | *auto-generated pass*  |
-| `ALLOW_ROOT_SSH` | boolean | Allow root access via SSH                   | `false`                |
-| `ENTER_PASS`     | boolean | Require to enter password for sudo commands | `false`                |
+Docker run example, which disables both APT and sudo group: `docker run --shm-size 2g -it -e ALLOW_APT=no -e ALLOW_SUDO=no -p 2222:22 danger89/xfcevdi_x2go:latest`
 
-## Update VDI
+Available environment variables::
 
-1. Stop docker container (`docker stop <container_id>`)
-2. Get latest version: `docker pull danger89/xfcevdi_x2go`
-3. Start docker container again (either via `docker run` or using `docker-compose`)
+| Env. variable | Type   | Description                                 | Default value         |
+| ------------- | ------ | ------------------------------------------- | --------------------- |
+| `USERNAME`    | string | New username                                | `user`                |
+| `USER_ID`     | string | New User/Group ID                           | `1000`                |
+| `PASS`        | string | Change password for user                    | _auto-generated pass_ |
+| `ALLOW_APT`   | string | User is allowed to use APT commands         | `yes`                 |
+| `ENTER_PASS`  | string | Require to enter password for sudo commands | `no`                  |
+| `ALLOW_SUDO`  | string | Add user to `sudo` group                    | `yes`                 |
 
-## Clients
+**NOTE 1:** Since [XFCE VDI v2.0](https://hub.docker.com/r/danger89/xfcevdi_x2go/tags), the new user is _only allowed_ to execute `apt` commands as root user. What can be changed on line 60 & 62 in [setup.sh script](scripts/setup.sh) and build your own Docker image.
+
+**NOTE 2:** Since [XFCE VDI v2.0](https://hub.docker.com/r/danger89/xfcevdi_x2go/tags) we disabled the root user completely for safety reasons. You can still use `sudo` command with the default user (called: `user`), but only allowed to execute `apt`. Since v2.0 booleans are also converted to 'yes' or 'no' strings to avoid YAML syntax confusion.
+
+## Update Docker Image
+
+Leveraging Docker Compose, use:
+
+1. Stop: `docker compose down`
+2. Update: `docker compose pull xfcevdi`
+3. Start again: `docker compose up -d` (runs in detached mode)
+
+_Note:_ If you installed Docker Compose manually using the script, then the script name is: `docker-compose` iso `docker compose`.
+
+Using Docker CLI:
+
+1. Stop docker container: `docker stop <container_id>`
+2. Update: `docker pull danger89/xfcevdi_x2go`
+3. Start again: `docker run`
+
+## X2Go Clients
 
 X2Go has two clients available to choose from:
 
@@ -105,8 +116,32 @@ Once you open the client, create a new session by providing the following settin
 
 Once you try to connect, accept the new SSH host key and you'll require to enter a password (by default the **passwords are auto-generated**!).
 
+## Build
+
+You do _not_ need to build the image yourself, instead try to use the pre-build [Docker image](https://hub.docker.com/r/danger89/xfcevdi_x2go). See also "Usage" above.
+
+If you want, you could build the image locally, using the command:
+
+```sh
+docker build --tag danger89/xfcevdi_x2go .
+```
+
+### Apt-Cacher (OPTIONAL!)
+
+When you have [apt-cacher](http://manpages.ubuntu.com/manpages/jammy/man8/apt-cacher.8.html) or [apt-cacher-ng](http://manpages.ubuntu.com/manpages/jammy/en/man8/apt-cacher-ng.8.html) proxy installed, use `APT_PROXY` parameter to set the proxy URL; where `melroy-pc` is _your_ hostname:
+
+**Important:** Be sure you configured `apt-cacher` correctly to accept incoming connections from Docker. Set: `allowed_hosts = *` in `/etc/apt-cacher/apt-cacher.conf` file.
+
+```sh
+docker build --build-arg APT_PROXY=http://melroy-pc:3142 --tag danger89/xfcevdi_x2go .
+```
+
 ## Common issues
 
 ### Host key verification failed
 
-This error means that you are using an old SSH host key. Try not to terminate the session and when X2Go client ask you to update the host key, choose 'yes'.
+This error means that you are using an old SSH host key.
+
+**Solution:** Try not to terminate the session and when X2Go client ask you to update the host key, choose 'yes'. This will replace the old host key with the new key.
+
+**Root-cause:** Each time you setup a new VDI Docker container, a new SSH host key is generated for you.

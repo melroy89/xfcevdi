@@ -1,13 +1,18 @@
-version: '3.8'
+version: "3.8"
 
 services:
   xfcevdi:
     image: danger89/xfcevdi_x2go:latest
     tty: true
     container_name: melroy_vdi
+    restart: unless-stopped
+    networks:
+      - xfce_vdi_network
     environment:
       USERNAME: melroy
       PASS: abc
+      # ALLOW_SUDO: 'no'
+      # ALLOW_APT: 'no'
     volumes:
       - /media/data/vdi_homes/:/home/
       - type: tmpfs
@@ -16,5 +21,6 @@ services:
           size: 2048000000 # 2GB
     ports:
       - "2222:22"
-    network_mode: bridge    
-    restart: unless-stopped
+
+networks:
+  - xfce_vdi_network:
