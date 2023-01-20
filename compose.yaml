@@ -14,8 +14,8 @@ services:
       # ALLOW_SUDO: 'no'
       # ALLOW_APT: 'no'
     volumes:
-      # Make the home folder persistent across restarts
-      - ./home_storage:/home/
+      # Make only the user (melroy) home folder persistent across restarts
+      - ./home_storage:/home/melroy
       - type: tmpfs
         target: /dev/shm
         tmpfs:

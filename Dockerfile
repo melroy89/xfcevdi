@@ -156,7 +156,9 @@ RUN echo 'echo "Info: Thank you for using Melroys VDI XFCE Docker image!"' >>/ho
 
 # Run as worker
 USER worker
+# Change default working directory
+WORKDIR /home/worker
 
 EXPOSE 22
 
-CMD ["/bin/bash", "./run.sh"]
+CMD ["/bin/bash", "/app/run.sh"]

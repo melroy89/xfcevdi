@@ -34,7 +34,7 @@ _Note:_ The Docker image will be retrieved automatically from [DockerHub](https:
 
 ### Docker
 
-Start the docker container using (with username: `user`, password: _is auto-generated_, port: `2222`):
+Start the docker container using (with default username: `user`, password: _is auto-generated_, port: `2222`):
 
 ```sh
 docker run --shm-size 2g -it --rm -p 2222:22 danger89/xfcevdi_x2go:latest
@@ -44,6 +44,12 @@ Or with the username `melroy` with password `abc` on port: `2222`:
 
 ```sh
 docker run --shm-size 2g -it --rm -p 2222:22 -e USERNAME=melroy -e PASS=abc danger89/xfcevdi_x2go:latest
+```
+
+Or make the default `user` home folder persistent between restarts:
+
+```sh
+docker run --shm-size 2g -it --rm -v $(pwd)/user_home:/home/user -p 2222:22 danger89/xfcevdi_x2go:latest
 ```
 
 See "X2Go Clients" section below how to connect.
