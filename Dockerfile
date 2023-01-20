@@ -141,7 +141,7 @@ RUN rm -rf /etc/xdg/autostart/light-locker.desktop /etc/xdg/autostart/xscreensav
 RUN usermod -s /usr/sbin/nologin root
 
 ## Create worker user (instead of root user)
-RUN useradd -G sudo -ms /bin/bash -u 1001 worker
+RUN useradd -G sudo -d /app -s /bin/bash -u 1001 worker
 RUN echo "Defaults!/app/setup.sh setenv" >>/etc/sudoers
 # Limit the execute of the following commands of the worker user
 RUN echo "worker ALL=(root) NOPASSWD:/usr/sbin/service ssh start, /usr/sbin/service dbus start, /usr/sbin/service rsyslog start, /app/setup.sh" >>/etc/sudoers
@@ -152,12 +152,10 @@ COPY ./configs/whiskermenu-1.rc ./
 COPY ./scripts/xfce_settings.sh ./
 COPY ./scripts/run.sh ./
 # Print hello during worker bash start-up
-RUN echo 'echo "Info: Thank you for using Melroys VDI XFCE Docker image!"' >>/home/worker/.bashrc
+RUN echo 'echo "Info: Thank you for using Melroys VDI XFCE Docker image!"' >>/app/.bashrc
 
 # Run as worker
 USER worker
-# Change default working directory
-WORKDIR /home/worker
 
 EXPOSE 22
 

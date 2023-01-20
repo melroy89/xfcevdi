@@ -71,7 +71,7 @@ echo -e "Info: Default username is '${USERNAME}' with the password: ${PASS}\n\n"
 # Unset password!
 unset PASS
 
-touch /home/worker/.setup_done
+touch /app/.setup_done
 
 # Self-destruct
 rm -- "$0"

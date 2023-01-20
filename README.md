@@ -46,10 +46,10 @@ Or with the username `melroy` with password `abc` on port: `2222`:
 docker run --shm-size 2g -it --rm -p 2222:22 -e USERNAME=melroy -e PASS=abc danger89/xfcevdi_x2go:latest
 ```
 
-Or make the default `user` home folder persistent between restarts:
+Or make home mount persistent between restarts:
 
 ```sh
-docker run --shm-size 2g -it --rm -v $(pwd)/user_home:/home/user -p 2222:22 danger89/xfcevdi_x2go:latest
+docker run --shm-size 2g -it --rm -v $(pwd)/vdi_home:/home -p 2222:22 danger89/xfcevdi_x2go:latest
 ```
 
 See "X2Go Clients" section below how to connect.
