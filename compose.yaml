@@ -14,7 +14,8 @@ services:
       # ALLOW_SUDO: 'no'
       # ALLOW_APT: 'no'
     volumes:
-      - /media/data/vdi_homes/:/home/
+      # Make the home folder persistent across restarts
+      - ./home_storage:/home/
       - type: tmpfs
         target: /dev/shm
         tmpfs:
@@ -23,4 +24,4 @@ services:
       - "2222:22"
 
 networks:
-  - xfce_vdi_network:
+  xfce_vdi_network:

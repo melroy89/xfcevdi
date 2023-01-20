@@ -68,15 +68,10 @@ echo ""
 echo "Warn: The username and password will be printed only once!"
 echo -e "Info: Default username is '${USERNAME}' with the password: ${PASS}\n\n"
 
-# Print info during shell start
-cat <<-EOT >"/home/worker/.bashrc"
-echo -e "Info: Thank you for using Melroy's VDI XFCE Docker image!"
-EOT
-
 # Unset password!
 unset PASS
 
-touch /app/.setup_done
+touch /home/worker/.setup_done
 
 # Self-destruct
 rm -- "$0"
