@@ -83,7 +83,7 @@ Available environment variables::
 | `ALLOW_APT`   | string | User is allowed to use APT commands                 | `yes`                 |
 | `ENTER_PASS`  | string | Require to enter password for specific APT commands | `no`                  |
 
-**NOTE 1:** Since [XFCE VDI v2.0](https://hub.docker.com/r/danger89/xfcevdi_x2go/tags), the new user is _only allowed_ to execute `apt` commands as root user. What can be changed on line 60 & 62 in [setup.sh script](scripts/setup.sh) and build your own Docker image.
+**NOTE 1:** Since [XFCE VDI v2.0](https://hub.docker.com/r/danger89/xfcevdi_x2go/tags), the new user is _only allowed_ to execute `apt` commands as root user. What can be changed on line 54 & 56 in [setup.sh script](scripts/setup.sh#L54) and build your own Docker image.
 
 **NOTE 2:** Since [XFCE VDI v2.0](https://hub.docker.com/r/danger89/xfcevdi_x2go/tags) we disabled the root user completely for safety reasons. You can still use `sudo` command with the default user (called: `user`), but only allowed to execute `apt`. Since v2.0 booleans are also converted to 'yes' or 'no' strings to avoid YAML syntax confusion.
 
