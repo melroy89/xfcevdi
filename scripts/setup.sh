@@ -42,12 +42,6 @@ echo 'pref("datareporting.policy.dataSubmissionEnabled", false);' >>/etc/firefox
 # Empty firstRun URL
 echo 'pref("datareporting.policy.firstRunURL", "");' >>/etc/firefox-esr/firefox-esr.js
 
-## Setting-up access control
-GROUP_LIST="x2gouser"
-if [ "$ALLOW_SUDO" = "yes" ]; then
-  GROUP_LIST="$GROUP_LIST,sudo"
-fi
-
 # Add new user
 useradd -ms /bin/bash -u "$USER_ID" -G "$GROUP_LIST" "$USERNAME"
 echo "$USERNAME:$PASS" | chpasswd

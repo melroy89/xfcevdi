@@ -11,7 +11,7 @@ services:
     environment:
       USERNAME: melroy
       PASS: abc
-      # ALLOW_SUDO: 'no'
+      # ENTER_PASS: 'yes'
       # ALLOW_APT: 'no'
     volumes:
       # Make home mount persistent across restarts

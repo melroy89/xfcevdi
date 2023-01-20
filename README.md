@@ -71,18 +71,17 @@ _Important:_ By default the user can install new software using `apt` (eg. `sudo
 
 You can either change the environment variables using `-e` flag during `docker run` _or_ by changing just the `environment` section in the `compose.yaml` file.
 
-Docker run example, which disables both APT and sudo group: `docker run --shm-size 2g -it -e ALLOW_APT=no -e ALLOW_SUDO=no -p 2222:22 danger89/xfcevdi_x2go:latest`
+Docker run example with `-e`, which disables APT and require password for `sudo apt`: `docker run --shm-size 2g -it -e ALLOW_APT=no -e ENTER_PASS=yes -p 2222:22 danger89/xfcevdi_x2go:latest`
 
 Available environment variables::
 
-| Env. variable | Type   | Description                                 | Default value         |
-| ------------- | ------ | ------------------------------------------- | --------------------- |
-| `USERNAME`    | string | New username                                | `user`                |
-| `USER_ID`     | string | New User/Group ID                           | `1000`                |
-| `PASS`        | string | Change password for user                    | _auto-generated pass_ |
-| `ALLOW_APT`   | string | User is allowed to use APT commands         | `yes`                 |
-| `ENTER_PASS`  | string | Require to enter password for sudo commands | `no`                  |
-| `ALLOW_SUDO`  | string | Add user to `sudo` group                    | `yes`                 |
+| Env. variable | Type   | Description                                         | Default value         |
+| ------------- | ------ | --------------------------------------------------- | --------------------- |
+| `USERNAME`    | string | New username                                        | `user`                |
+| `USER_ID`     | string | New User/Group ID                                   | `1000`                |
+| `PASS`        | string | Change password for user                            | _auto-generated pass_ |
+| `ALLOW_APT`   | string | User is allowed to use APT commands                 | `yes`                 |
+| `ENTER_PASS`  | string | Require to enter password for specific APT commands | `no`                  |
 
 **NOTE 1:** Since [XFCE VDI v2.0](https://hub.docker.com/r/danger89/xfcevdi_x2go/tags), the new user is _only allowed_ to execute `apt` commands as root user. What can be changed on line 60 & 62 in [setup.sh script](scripts/setup.sh) and build your own Docker image.
 
