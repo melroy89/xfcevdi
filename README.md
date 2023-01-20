@@ -66,12 +66,11 @@ _Note:_ If you installed Docker Compose manually using the script, then the scri
 
 ## Environment variables
 
-_Important:_ By default the newly created user is added to the `sudo` group, allowing to execute commands as root within the container.
-_Important:_ By default the user can install new software using `apt` (eg. `sudo apt install`), without providing it's password.
+_Important:_ By default the user can install new software using APT (eg. `sudo apt install`) and without providing it's password. You can set `ALLOW_APT` to `no` to disable the use of APT all together.
 
 You can either change the environment variables using `-e` flag during `docker run` _or_ by changing just the `environment` section in the `compose.yaml` file.
 
-Docker run example with `-e`, which disables APT and require password for `sudo apt`: `docker run --shm-size 2g -it -e ALLOW_APT=no -e ENTER_PASS=yes -p 2222:22 danger89/xfcevdi_x2go:latest`
+Docker run example with `-e` flag which disables APT for the default user: `docker run --shm-size 2g -it -e ALLOW_APT=no -p 2222:22 danger89/xfcevdi_x2go:latest`
 
 Available environment variables::
 
@@ -85,7 +84,7 @@ Available environment variables::
 
 **NOTE 1:** Since [XFCE VDI v2.0](https://hub.docker.com/r/danger89/xfcevdi_x2go/tags), the new user is _only allowed_ to execute `apt` commands as root user. What can be changed on line 54 & 56 in [setup.sh script](scripts/setup.sh#L54) and build your own Docker image.
 
-**NOTE 2:** Since [XFCE VDI v2.0](https://hub.docker.com/r/danger89/xfcevdi_x2go/tags) we disabled the root user completely for safety reasons. You can still use `sudo` command with the default user (called: `user`), but only allowed to execute `apt`. Since v2.0 booleans are also converted to 'yes' or 'no' strings to avoid YAML syntax confusion.
+**NOTE 2:** Since [XFCE VDI v2.0](https://hub.docker.com/r/danger89/xfcevdi_x2go/tags) we disabled the root user completely for safety reasons. Again, you can _only_ use `sudo apt` command as the default user (called: `user`), other sudo commands are disallowed. Since v2.0 booleans are also converted to 'yes' or 'no' strings to avoid YAML syntax confusion.
 
 ## Update Docker Image
 
