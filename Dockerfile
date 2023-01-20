@@ -8,7 +8,6 @@ ENV USERNAME=user
 ENV USER_ID=1000
 ENV ALLOW_APT=yes
 ENV ENTER_PASS=no
-ENV ALLOW_SUDO=yes
 
 # Build arguments, _only_ used during Docker build
 ARG DEBIAN_FRONTEND=noninteractive
