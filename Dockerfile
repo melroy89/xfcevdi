@@ -39,7 +39,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 #RUN apt-add-repository -y contrib non-free
 # Copy our own Debian sources file with contrib & non-free instead of apt-add-repository
 COPY ./configs/debian.sources /etc/apt/sources.list.d/debian.sources
-RUN cat /etc/apt/sources.list.d/debian.sources
 
 # Retrieve third party GPG keys from keyserver
 RUN gpg --keyserver keyserver.ubuntu.com --recv-keys 302F0738F465C1535761F965A6616109451BBBF2 972FD88FA0BAFB578D0476DFE1F958385BFE2B6E
