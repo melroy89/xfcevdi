@@ -1,4 +1,4 @@
-FROM debian:bullseye
+FROM debian:bookworm
 
 LABEL maintainer="melroy@melroy.org"
 
@@ -26,18 +26,20 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     gnupg-utils gpg gpg-agent \
     gpg-wks-client gpg-wks-server gpgconf \
     gpgsm libassuan0 libksba8 \
-    libldap-2.4-2 libldap-common libnpth0 \
+    libldap-2.5-0 libldap-common libnpth0 \
     libreadline8 libsasl2-2 libsasl2-modules \
-    libsasl2-modules-db libsqlite3-0 libssl1.1 \
+    libsasl2-modules-db libsqlite3-0 libssl3 \
     lsb-base pinentry-curses readline-common \
     apt-transport-https ca-certificates curl \
     software-properties-common apt-utils net-tools
 
 ## Add additional repositories/components (software-properties-common is required to be installed)
 # Add contrib and non-free distro components (deb822-style format)
-RUN apt-add-repository -y contrib && apt-add-repository -y non-free
-# Add Debian backports repo for XFCE thunar-font-manager
-RUN add-apt-repository -y "deb http://deb.debian.org/debian bullseye-backports main contrib non-free"
+# Note: apt-add-repository seems to be broken under Debian 12 :(
+#RUN apt-add-repository -y contrib non-free
+# Copy our own Debian sources file with contrib & non-free instead of apt-add-repository
+COPY ./configs/debian.sources /etc/apt/sources.list.d/debian.sources
+RUN cat /etc/apt/sources.list.d/debian.sources
 
 # Retrieve third party GPG keys from keyserver
 RUN gpg --keyserver keyserver.ubuntu.com --recv-keys 302F0738F465C1535761F965A6616109451BBBF2 972FD88FA0BAFB578D0476DFE1F958385BFE2B6E
@@ -45,8 +47,8 @@ RUN gpg --keyserver keyserver.ubuntu.com --recv-keys 302F0738F465C1535761F965A66
 # Add Linux Mint GPG keyring file (for the Mint-Y-Dark theme)
 RUN gpg --export 302F0738F465C1535761F965A6616109451BBBF2 | tee /etc/apt/trusted.gpg.d/linuxmint-archive-keyring.gpg >/dev/null
 
-# Add Linux Mint Debbie repo source file
-COPY ./configs/linuxmint-debbie.list /etc/apt/sources.list.d/linuxmint-debbie.list
+# Add Linux Mint Faye repo source file
+COPY ./configs/linuxmint-faye.list /etc/apt/sources.list.d/linuxmint-faye.list
 
 # Add X2Go GPG keyring file
 RUN gpg --export 972FD88FA0BAFB578D0476DFE1F958385BFE2B6E | tee /etc/apt/trusted.gpg.d/x2go-archive-keyring.gpg >/dev/null
@@ -64,7 +66,6 @@ RUN apt-get install -y --no-install-recommends \
     pavucontrol \
     dbus-x11 \
     locales \
-    rsyslog \
     git \
     wget \
     sudo \
@@ -83,7 +84,8 @@ RUN apt-get install -y --no-install-recommends \
     xdg-utils \
     xz-utils \
     x11-utils \
-    x11-xkb-utils
+    x11-xkb-utils \
+    cron
 
 ## Add themes & fonts
 RUN apt-get install -y --no-install-recommends fonts-ubuntu breeze-gtk-theme mint-themes
@@ -111,9 +113,9 @@ RUN apt-get install -y \
     thunar thunar-archive-plugin thunar-media-tags-plugin
 
 ## Add more applications
-# Most importanly: browser, calculator, file editor, video player, profile manager
+# Most importantly: browser, calculator, file editor, video player, profile manager
 RUN apt-get install -y --no-install-recommends \
-    firefox-esr htop gnome-calculator \
+    firefox-esr htop qalculate-gtk \
     mousepad celluloid mugshot
 
 # Update locales, generate new SSH host keys and clean-up (keep manpages)
@@ -136,6 +138,9 @@ RUN sed -i "s/Hidden=.*/Hidden=false/" /etc/xdg/autostart/xfce4-clipman-plugin-a
 # Remove unnecessary existing start-up apps
 RUN rm -rf /etc/xdg/autostart/light-locker.desktop /etc/xdg/autostart/xscreensaver.desktop
 
+# Change default terminal to xfce4-terminal
+RUN update-alternatives --set x-terminal-emulator /usr/bin/xfce4-terminal.wrapper
+
 # Disable root shell
 RUN usermod -s /usr/sbin/nologin root
 
@@ -143,7 +148,7 @@ RUN usermod -s /usr/sbin/nologin root
 RUN useradd -d /app -s /bin/bash -u 1001 worker
 RUN echo "Defaults!/app/setup.sh setenv" >>/etc/sudoers
 # Limit the execute of the following commands of the worker user
-RUN echo "worker ALL=(root) NOPASSWD:/usr/sbin/service ssh start, /usr/sbin/service dbus start, /usr/sbin/service rsyslog start, /app/setup.sh" >>/etc/sudoers
+RUN echo "worker ALL=(root) NOPASSWD:/usr/sbin/service ssh start, /usr/sbin/service dbus start, /usr/sbin/service cron start, /app/setup.sh" >>/etc/sudoers
 # Copy worker scripts
 COPY ./scripts/setup.sh ./
 COPY ./configs/terminalrc ./

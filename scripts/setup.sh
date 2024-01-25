@@ -15,9 +15,6 @@ sed -i "s/#PermitRootLogin.*/PermitRootLogin no/g" /etc/ssh/sshd_config
 ## Create D-bus daemon runtime directory
 mkdir -p /run/dbus
 
-## Change rsyslog settings
-# Disable kernel logging
-sed -i "s/module(load=\"imklog\")/#module(load=\"imklog\")/g" /etc/rsyslog.conf
 
 ## PulseAudio?
 # Should I create a /run/pulse maybe?

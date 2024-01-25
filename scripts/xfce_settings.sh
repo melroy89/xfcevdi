@@ -2,13 +2,19 @@
 # Change some settings of XFCE4 look & feel
 
 if [ ! -f /home/$USER/.local/.xfce_settings_done ]; then
-  # Additional changes to XFCE settings (xsettings.xml)
-  xfconf-query -c xsettings -p /Net/ThemeName -s "Breeze-Dark"
-  xfconf-query -c xsettings -p /Net/IconThemeName -s "Mint-Y-Dark-Aqua"
-  xfconf-query -c xsettings -p /Gtk/FontName -s "Ubuntu 10"
+  # Using the gsettings comand to change the GTK, Icon & Windows theme + font
+  gsettings set org.gnome.desktop.interface gtk-theme "Mint-Y-Dark-Aqua"
+  gsettings set org.gnome.desktop.interface icon-theme "Mint-Y-Aqua"
+  gsettings set org.gnome.desktop.wm.preferences theme "Mint-Y-Dark-Aqua"
+  gsettings set org.gnome.desktop.interface font-name "Ubuntu 10"
 
+  # Additional changes to XFCE settings (xsettings.xml)
+  # Change again the themes & font, maybe a bit redundant
+  xfconf-query -c xsettings -p /Net/ThemeName -s "Mint-Y-Dark-Aqua"
+  xfconf-query -c xsettings -p /Net/IconThemeName -s "Mint-Y-Aqua"
+  xfconf-query -c xsettings -p /Gtk/FontName -s "Ubuntu 10"
   # Change window style manager
-  xfconf-query -c xfwm4 -p /general/theme -s "Mint-Y-Dark-Blue"
+  xfconf-query -c xfwm4 -p /general/theme -s "Mint-Y-Dark-Aqua"
   xfconf-query -c xfwm4 -p /general/title_font -s "Ubuntu Medium 10"
 
   # Disable XFCE Compositor
@@ -27,12 +33,14 @@ if [ ! -f /home/$USER/.local/.xfce_settings_done ]; then
 
   # Change bottom-panel to intelligently-hide
   xfconf-query -c xfce4-panel -p /panels/panel-2/autohide-behavior -n -t int -s 1
+  # Set the row size to exactly 52 pixels (to get a sharp icons)
+  xfconf-query -c xfce4-panel -p /panels/panel-2/size -s 52
   
-  # Reset panel(s) once (can all this be done, without the need of restarting?)
-  xfce4-panel -r
-
   # TODO: Change background image?
   # TODO: Add Dict plugin to xfce4 panel?
+
+  # Reset panel(s) once (can all this be done, without the need of restarting?)
+  xfce4-panel -r
 
   # Change browser icon to Firefox
   declare -i MAX_TRIES=25

@@ -10,9 +10,9 @@ This docker image enables you to start one or more instances of a Virtual Deskto
 
 - By using the [X2Go protocol](https://wiki.x2go.org/) it's easy to connect/share sessions between the client and the server. Which allows remote working or any other task you might want do remotely in a windowing system.
 
-- The image contains a [docker GNU/Linux Debian](https://hub.docker.com/_/debian) (bullseye) operating system, together with XFCE4 desktop environment. The required X2Goserver/X2Gosession are already pre-installed.
+- The image contains a [docker GNU/Linux Debian](https://hub.docker.com/_/debian) (Bookworm) operating system, together with XFCE4 desktop environment. The required X2Goserver/X2Gosession are already pre-installed.
 
-- In fact, this Docker image has alot of packages pre-installed you probably want anyway, including but not limited to: `Firefox`, `LibreOffice`, `gnome-calculator`, `archiver`, `file manager`, `text editor`, `image viewer`, `htop`, `clipboard manager` and much more.
+- In fact, this Docker image has a lot of packages pre-installed you probably want anyway, including but not limited to: `Firefox`, `LibreOffice`, `qalculate`, `archiver`, `file manager`, `text editor`, `image viewer`, `htop`, `clipboard manager` and much more.
 
 - Last but not least, the image is preconfigured with a nice dark-theme (Breeze-Dark), window theme (Mint-Y-Dark) as well as a nice looking icon set (Mint-Y-Dark-Aqua) and uses Ubuntu fonts by default. See below an preview:
 
@@ -31,6 +31,8 @@ _Note 2:_ Optionally adapt the [XFCE settings script](xfce_settings.sh) to your 
 You could use the `docker` CLI or Docker Compose (`docker compose`).
 
 _Note:_ The Docker image will be retrieved automatically from [DockerHub](https://hub.docker.com/r/danger89/xfcevdi_x2go).
+
+_Note 2:_ Since Docker tag v3.0 it's based on Debian Bookworm (Debian 12).
 
 ### Docker
 
@@ -113,7 +115,7 @@ Which can both be [downloaded from their site](https://wiki.x2go.org/doku.php/do
 
 Once you open the client, create a new session by providing the following settings (default settings):
 
-- Host: host IP addresss (or domain name or `localhost`)
+- Host: host IP address (or domain name or `localhost`)
 - Login: `user` (default username)
 - SSH port: `2222` (default port)
 - Session type: `XFCE` (select from drop-down menu)
