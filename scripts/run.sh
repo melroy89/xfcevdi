@@ -21,8 +21,8 @@ unset PASS
 sudo service ssh start
 # Start dbus system daemon
 sudo service dbus start
-# Start syslog (for debugging reasons)
-sudo service rsyslog start
+# Start cron daemon
+sudo service cron start
 
 ## Start bash and wait
 /bin/bash
