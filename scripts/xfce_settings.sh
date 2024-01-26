@@ -2,7 +2,7 @@
 # Change some settings of XFCE4 look & feel
 
 if [ ! -f /home/$USER/.local/.xfce_settings_done ]; then
-  # Using the gsettings comand to change the GTK, Icon & Windows theme + font
+  # Using the gsettings command to change the GTK, Icon & Windows theme + font
   gsettings set org.gnome.desktop.interface gtk-theme "Mint-Y-Dark-Aqua"
   gsettings set org.gnome.desktop.interface icon-theme "Mint-Y-Aqua"
   gsettings set org.gnome.desktop.wm.preferences theme "Mint-Y-Dark-Aqua"
