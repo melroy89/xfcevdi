@@ -31,9 +31,14 @@ if [ ! -f /home/$USER/.local/.xfce_settings_done ]; then
   # Change default menu to whisker menu
   xfconf-query -c xfce4-panel -p /plugins/plugin-1 -s "whiskermenu"
 
+  # Change top-panel height (row size)
+  xfconf-query -c xfce4-panel -p /panels/panel-1/size -s 36
+  # Set icon size automatically
+  xfconf-query -c xfce4-panel -p /panels/panel-1/icon-size -s 0
+
   # Change bottom-panel to intelligently-hide
   xfconf-query -c xfce4-panel -p /panels/panel-2/autohide-behavior -n -t int -s 1
-  # Set the row size to exactly 52 pixels (to get a sharp icons)
+  # Set the row size to exactly 52 pixels (to get sharp icons)
   xfconf-query -c xfce4-panel -p /panels/panel-2/size -s 52
   
   # TODO: Change background image?
